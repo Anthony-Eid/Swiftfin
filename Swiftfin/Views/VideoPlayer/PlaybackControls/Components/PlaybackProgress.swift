@@ -66,6 +66,11 @@ extension VideoPlayer.PlaybackControls {
         @State
         private var sliderSize: CGSize = .zero
 
+        #if os(macOS)
+        @State
+        private var pointerProgress = PointerProgressReader.Proxy()
+        #endif
+
         private var isScrubbing: Bool {
             viewState.isScrubbing
         }
@@ -164,6 +169,13 @@ extension VideoPlayer.PlaybackControls {
                 .onEditingChanged { newValue in
                     if newValue {
                         viewState.beginScrub()
+
+                        #if os(macOS)
+                        // A press on the track brings the playhead under the pointer before any drag.
+                        if let progress = pointerProgress.progress, let runtime = mediaSession.item.runtime {
+                            viewState.scrubbedSeconds = runtime * progress
+                        }
+                        #endif
                     } else {
                         viewState.commitScrub()
                     }
@@ -225,6 +237,11 @@ extension VideoPlayer.PlaybackControls {
                 } else {
                     capsuleSlider
                         .trackingSize($sliderSize)
+                    #if os(macOS)
+                        .background {
+                            PointerProgressReader(proxy: pointerProgress)
+                        }
+                    #endif
                         .accessibilityElement()
                         .accessibilityLabel(L10n.playbackPosition)
                         .accessibilityValue(accessibilityValue)

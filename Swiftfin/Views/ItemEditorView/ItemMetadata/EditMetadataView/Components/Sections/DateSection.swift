@@ -49,9 +49,7 @@ extension EditMetadataView {
                     value: $item.productionYear,
                     format: .number.grouping(.never)
                 )
-                #if !os(macOS)
                 .keyboardType(.numberPad)
-                #endif
             }
         }
     }

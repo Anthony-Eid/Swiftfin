@@ -28,7 +28,7 @@ extension VideoPlayer {
             #endif
         }
 
-        #if os(iOS)
+        #if !os(tvOS)
         var supplementHeight: CGFloat = 0
         var supplementVisibleHeight: CGFloat = 0
         var playbackButtonsInsets: EdgeInsets = .zero
@@ -469,11 +469,19 @@ extension VideoPlayer {
                 .sink { [weak self] in
                     guard let self, canAutoDismiss else { return }
 
+                    #if os(macOS)
+                    // The pointer may rest on a sheet or popover that covers the player.
+                    if containerView?.isCoveredByPresentation == true {
+                        refreshAutoDismiss()
+                        return
+                    }
+                    #else
                     // UIKit presentations do not all participate in SwiftUI focus.
                     if containerView?.presentedViewController != nil {
                         refreshAutoDismiss()
                         return
                     }
+                    #endif
 
                     withAnimation(.linear(duration: 0.25)) {
                         self.hideControls()
@@ -586,9 +594,11 @@ extension VideoPlayer {
                 }
             }
 
+            #if !os(macOS)
             if supplements.isEmpty {
                 containerView?.cancelSupplementPan()
             }
+            #endif
 
             cancelScrub()
             freezePlaybackTimeIfHidden()

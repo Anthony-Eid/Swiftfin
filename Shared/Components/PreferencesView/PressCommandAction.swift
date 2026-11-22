@@ -12,6 +12,7 @@ import UIKit
 import AppKit
 #endif
 
+#if !os(macOS)
 struct PressCommandAction {
 
     let title: String
@@ -25,3 +26,4 @@ extension PressCommandAction: Equatable {
         lhs.press == rhs.press
     }
 }
+#endif

@@ -126,9 +126,7 @@ struct UserSignInView: View {
                 .disabled(user != nil)
                 .autocorrectionDisabled()
                 .textContentType(.username)
-            #if !os(macOS)
                 .textInputAutocapitalization(.never)
-            #endif
                 .focused($focusedTextField, equals: .username)
                 .onSubmit {
                     focusedTextField = .password
@@ -148,10 +146,8 @@ struct UserSignInView: View {
             }
             .autocorrectionDisabled()
             .textContentType(.password)
-            #if !os(macOS)
-                .textInputAutocapitalization(.never)
-            #endif
-                .focused($focusedTextField, equals: .password)
+            .textInputAutocapitalization(.never)
+            .focused($focusedTextField, equals: .password)
         } header: {
             Text(L10n.signInToServer(viewModel.server.name))
         } footer: {
@@ -181,10 +177,10 @@ struct UserSignInView: View {
             .fontWeight(.semibold)
             .backport
             .buttonStyle(.glassProminent.shadow(false))
-            #if os(iOS)
-                .controlSize(.large)
+            #if os(iOS) || os(macOS)
+            .controlSize(.large)
             #endif
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .listRowSeparator(.hidden)
             #endif
             .frame(maxHeight: 75)
@@ -204,12 +200,12 @@ struct UserSignInView: View {
             .backport
             .buttonStyle(.glassProminent.shadow(false))
             .tint(.jellyfinPurple)
-            #if os(iOS)
-                .controlSize(.large)
-                .listRowSeparator(.hidden)
+            #if os(iOS) || os(macOS)
+            .controlSize(.large)
+            .listRowSeparator(.hidden)
             #endif
-                .frame(maxHeight: 75)
-                .disabled(username.isEmpty)
+            .frame(maxHeight: 75)
+            .disabled(username.isEmpty)
         }
 
         if user == nil, viewModel.isQuickConnectEnabled {
@@ -232,10 +228,10 @@ struct UserSignInView: View {
                 .backport
                 .buttonStyle(.glassProminent.shadow(false))
                 .tint(.jellyfinPurple)
-                #if os(iOS)
-                    .controlSize(.large)
+                #if os(iOS) || os(macOS)
+                .controlSize(.large)
                 #endif
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 .listRowSeparator(.hidden)
                 #endif
                 .disabled(viewModel.state == .signingIn)
@@ -309,7 +305,7 @@ struct UserSignInView: View {
 
     @ContentBuilder
     private var contentView: some View {
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         List {
             signInSection
             publicUsersSection.disabled(user != nil)

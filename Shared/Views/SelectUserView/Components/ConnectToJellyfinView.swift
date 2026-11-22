@@ -23,7 +23,7 @@ extension SelectUserView {
 
         @ContentBuilder
         var body: some View {
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             ScrollView {
                 content
                     .edgePadding(.vertical)
@@ -56,7 +56,7 @@ extension SelectUserView {
                 .backport
                 .buttonStyle(.glassProminent.shadow(false))
                 .tint(theme.accentColor)
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 .controlSize(.large)
                 .frame(minHeight: viewLayout.controlHeight)
                 #else

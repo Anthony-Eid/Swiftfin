@@ -66,15 +66,35 @@ struct JellyfinWebView: View {
     }
 }
 
-private struct JellyfinWebUIView: UIViewRepresentable {
+private struct JellyfinWebUIView: PlatformViewRepresentable {
 
     let userSession: UserSession
     let url: URL
 
+    #if os(macOS)
+    func makeNSView(context: Context) -> WKWebView {
+        makeWebView()
+    }
+
+    func updateNSView(_ webView: WKWebView, context: Context) {}
+    #else
     func makeUIView(context: Context) -> WKWebView {
+        makeWebView()
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {}
+    #endif
+
+    @MainActor
+    private func makeWebView() -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = .nonPersistent()
+        #if os(macOS)
+        let layout = "desktop"
+        #else
+        let layout = "mobile"
         configuration.defaultWebpagePreferences.preferredContentMode = .mobile
+        #endif
 
         // Provide Jellyfin-Web our session information only on the server's origin.
         let serverURL = userSession.client.configuration.url
@@ -109,7 +129,7 @@ private struct JellyfinWebUIView: UIViewRepresentable {
 
                         localStorage.setItem('jellyfin_credentials', JSON.stringify(session.credentials));
                         localStorage.setItem('_deviceId2', session.deviceID);
-                        localStorage.setItem('layout', 'mobile');
+                        localStorage.setItem('layout', '\(layout)');
                     })();
                     """,
                     injectionTime: .atDocumentStart,
@@ -124,6 +144,4 @@ private struct JellyfinWebUIView: UIViewRepresentable {
 
         return webView
     }
-
-    func updateUIView(_ webView: WKWebView, context: Context) {}
 }

@@ -46,7 +46,8 @@ struct CustomDeviceProfilesView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(systemImage: "doc.on.doc") { behaviorView
+        Form(systemImage: "doc.on.doc") {
+            behaviorView
             customProfileView
             defaultProfileView
         }
@@ -54,11 +55,11 @@ struct CustomDeviceProfilesView: View {
         .topBarTrailing {
             if customProfiles.isNotEmpty {
                 addButton
-                #if os(iOS)
-                .backport
-                .buttonStyle(.glassProminent)
-                .controlSize(.small)
-                #endif
+                    #if os(iOS) || os(macOS)
+                        .backport
+                        .buttonStyle(.glassProminent)
+                        .controlSize(.small)
+                    #endif
             }
         }
     }
@@ -109,10 +110,10 @@ struct CustomDeviceProfilesView: View {
                 }
                 #if os(iOS)
                 .swipeActions {
-                    deleteButton(profile: profile)
-                }
+                        deleteButton(profile: profile)
+                    }
                 #else
-                .contextMenu {
+                    .contextMenu {
                         deleteButton(profile: profile)
                     }
                 #endif
@@ -135,9 +136,8 @@ struct CustomDeviceProfilesView: View {
                     }
                     .foregroundStyle(.primary, .secondary)
                     #if os(macOS)
-                        // These rows are display-only; the default mac button
-                        // border would box each multi-line profile
-                            .buttonStyle(.plain)
+                    // Display-only rows, the bordered button would box each profile
+                    .buttonStyle(.plain)
                     #endif
                 }
 
@@ -152,7 +152,8 @@ struct CustomDeviceProfilesView: View {
                     }
                     .foregroundStyle(.primary, .secondary)
                     #if os(macOS)
-                        .buttonStyle(.plain)
+                    // Display-only rows, the bordered button would box each profile
+                    .buttonStyle(.plain)
                     #endif
                 }
             }

@@ -107,6 +107,17 @@ protocol MediaPlayerSubtitleCueProviding {
     func canObserveSubtitleCues(at playerIndex: Int) -> Bool
 }
 
+#if os(macOS)
+/// Player volume in `0...1`. Other platforms leave volume to the system.
+@MainActor
+protocol MediaPlayerVolumeProviding: AnyObject {
+
+    var volume: Double { get }
+
+    func setVolume(_ volume: Double)
+}
+#endif
+
 @MainActor
 protocol MediaPlayerPictureInPictureProviding: AnyObject, Observable {
 

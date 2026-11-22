@@ -103,7 +103,9 @@ struct EditItemElementView<Editor: ItemComponentEditor>: View {
             }
         }
         .listStyle(.plain)
+        #if !os(macOS)
         .environment(\.editMode, isReordering ? .constant(.active) : .constant(.inactive))
+        #endif
     }
 
     @ContentBuilder

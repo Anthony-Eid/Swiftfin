@@ -29,6 +29,23 @@ extension VideoPlayer {
         @Toaster
         private var toaster: ToastProxy
 
+        #if os(macOS)
+        @Router
+        private var router
+
+        private func adjustVolume(by delta: Double) {
+            guard let player = mediaSession.player as? any MediaPlayerVolumeProviding else { return }
+
+            let volume = clamp(player.volume + delta, min: 0, max: 1)
+            player.setVolume(volume)
+
+            toaster.present(
+                Text(volume, format: .percent.precision(.fractionLength(0))),
+                systemName: volume == 0 ? "speaker.slash.fill" : "speaker.wave.2.fill"
+            )
+        }
+        #endif
+
         @ContentBuilder
         func body(content: Content) -> some View {
             content
@@ -127,7 +144,7 @@ extension VideoPlayer {
 
                     KeyCommandAction(
                         title: L10n.nextItem,
-                        input: UIKeyCommand.inputRightArrow,
+                        input: KeyCommandAction.inputRightArrow,
                         modifierFlags: .command
                     ) {
                         guard let nextItem = mediaSession.queue?.nextItem else { return }
@@ -139,7 +156,7 @@ extension VideoPlayer {
 
                     KeyCommandAction(
                         title: L10n.previousItem,
-                        input: UIKeyCommand.inputLeftArrow,
+                        input: KeyCommandAction.inputLeftArrow,
                         modifierFlags: .command
                     ) {
                         guard let previousItem = mediaSession.queue?.previousItem else { return }
@@ -151,7 +168,7 @@ extension VideoPlayer {
 
                     KeyCommandAction(
                         title: L10n.jumpBackward,
-                        input: UIKeyCommand.inputLeftArrow
+                        input: KeyCommandAction.inputLeftArrow
                     ) {
                         guard mediaSession.canSeek else { return }
 
@@ -172,7 +189,7 @@ extension VideoPlayer {
 
                     KeyCommandAction(
                         title: L10n.jumpForward,
-                        input: UIKeyCommand.inputRightArrow
+                        input: KeyCommandAction.inputRightArrow
                     ) {
                         guard mediaSession.canSeek else { return }
 
@@ -188,6 +205,52 @@ extension VideoPlayer {
                             systemName: "goforward"
                         )
                     }
+
+                    #if os(macOS)
+
+                    // MARK: - Full Screen
+
+                    KeyCommandAction(
+                        title: "Full Screen",
+                        input: "f"
+                    ) {
+                        viewState.containerView?.toggleFullScreen()
+                    }
+
+                    // MARK: - Volume
+
+                    KeyCommandAction(
+                        title: "Volume Up",
+                        input: KeyCommandAction.inputUpArrow
+                    ) {
+                        adjustVolume(by: 0.05)
+                    }
+
+                    KeyCommandAction(
+                        title: "Volume Down",
+                        input: KeyCommandAction.inputDownArrow
+                    ) {
+                        adjustVolume(by: -0.05)
+                    }
+
+                    // MARK: - Escape
+
+                    KeyCommandAction(
+                        title: L10n.close,
+                        input: KeyCommandAction.inputEscape
+                    ) {
+                        if viewState.isScrubbing {
+                            viewState.cancelScrub()
+                        } else if viewState.containerView?.isFullScreen == true {
+                            viewState.containerView?.toggleFullScreen()
+                        } else if viewState.isPresentingSupplement {
+                            viewState.selectedSupplementID = nil
+                        } else {
+                            mediaSession.stop()
+                            router.dismiss()
+                        }
+                    }
+                    #endif
                 }
         }
     }

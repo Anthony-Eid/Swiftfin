@@ -596,6 +596,19 @@ extension MPVMediaPlayer: MediaPlayerPictureInPictureProviding {
     }
 }
 
+#if os(macOS)
+extension MPVMediaPlayer: MediaPlayerVolumeProviding {
+
+    var volume: Double {
+        player.volume / 100
+    }
+
+    func setVolume(_ volume: Double) {
+        player.setVolume(volume * 100)
+    }
+}
+#endif
+
 extension MPVMediaPlayer: MediaPlayerSubtitleCueProviding {
 
     var subtitleCues: Set<SubtitleCue> {

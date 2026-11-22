@@ -23,7 +23,7 @@ extension VideoPlayer.UIContainerViewController {
         @FocusState
         private var focusedElement: String?
 
-        #if os(iOS)
+        #if !os(tvOS)
         @ContentBuilder
         private func closeButton(size: CGFloat) -> some View {
             Button {
@@ -81,7 +81,7 @@ extension VideoPlayer.UIContainerViewController {
                     .disabled(true)
             } content: { (size: CGSize) in
                 HStack(spacing: viewLayout.supplementButtonSpacing) {
-                    #if os(iOS)
+                    #if !os(tvOS)
                     if viewState.isPresentingFullScreenSupplement {
                         closeButton(size: size.height)
                     }

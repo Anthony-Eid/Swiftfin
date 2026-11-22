@@ -25,7 +25,7 @@ enum SystemSettings {
             true
 
         case .captionStyles:
-            if #available(iOS 26.4, tvOS 26.4, *) {
+            if #available(iOS 26.4, tvOS 26.4, macOS 26.4, *) {
                 AccessibilitySettings.canOpenSettings(for: .captionStyles)
             } else {
                 false
@@ -36,12 +36,19 @@ enum SystemSettings {
     func open() async throws {
         switch self {
         case .application:
+            #if os(macOS)
+            // A Mac app has no pane of its own in System Settings
+            guard let url = URL(string: "x-apple.systempreferences:"), NSWorkspace.shared.open(url) else {
+                throw ErrorMessage(L10n.unableToOpenSettings)
+            }
+            #else
             guard let url = URL(string: UIApplication.openSettingsURLString), await UIApplication.shared.open(url) else {
                 throw ErrorMessage(L10n.unableToOpenSettings)
             }
+            #endif
 
         case .captionStyles:
-            guard #available(iOS 26.4, tvOS 26.4, *), AccessibilitySettings.canOpenSettings(for: .captionStyles) else {
+            guard #available(iOS 26.4, tvOS 26.4, macOS 26.4, *), AccessibilitySettings.canOpenSettings(for: .captionStyles) else {
                 throw ErrorMessage(L10n.unableToOpenSettings)
             }
 

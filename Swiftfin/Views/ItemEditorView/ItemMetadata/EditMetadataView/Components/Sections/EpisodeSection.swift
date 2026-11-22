@@ -37,9 +37,7 @@ extension EditMetadataView {
                             value: $item.parentIndexNumber,
                             format: .number
                         )
-                        #if !os(macOS)
                         .keyboardType(.numberPad)
-                        #endif
                     } message: {
                         Text(L10n.enterSeasonNumber)
                     }
@@ -60,9 +58,7 @@ extension EditMetadataView {
                             value: $item.indexNumber,
                             format: .number
                         )
-                        #if !os(macOS)
                         .keyboardType(.numberPad)
-                        #endif
                     } message: {
                         Text(L10n.enterEpisodeNumber)
                     }

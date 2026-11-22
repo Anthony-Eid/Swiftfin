@@ -42,14 +42,15 @@ enum AppAppearance: String, CaseIterable, Displayable, Storable {
         }
     }
     #elseif os(macOS)
-    var style: NSAppearance.Name {
+    /// `nil` follows the system appearance.
+    var nsAppearance: NSAppearance? {
         switch self {
         case .system:
-            .aqua
+            nil
         case .dark:
-            .darkAqua
+            NSAppearance(named: .darkAqua)
         case .light:
-            .aqua
+            NSAppearance(named: .aqua)
         }
     }
     #endif

@@ -69,11 +69,17 @@ struct EPGChannelColumn: View {
                 .padding(.bottom, bottomInset)
             }
             .scrollIndicators(.hidden)
+            #if os(macOS)
+            .introspect(.scrollView, on: .macOS(.v15...)) { scrollView in
+                proxy.registerVertical(scrollView)
+            }
+            #else
             .introspect(.scrollView, on: .iOS(.v18...), .tvOS(.v18...)) { scrollView in
                 scrollView.contentInsetAdjustmentBehavior = viewLayout.isLarge ? .never : .automatic
 
                 proxy.registerVertical(scrollView)
             }
+            #endif
         }
         .frame(width: layout.channelColumnWidth)
         .focusSection()

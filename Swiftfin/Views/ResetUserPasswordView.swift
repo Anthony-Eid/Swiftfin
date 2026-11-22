@@ -63,11 +63,9 @@ struct ResetUserPasswordView: View {
                         focusedField = .newPassword
                     }
                     .autocorrectionDisabled()
-                    #if !os(macOS)
-                        .textInputAutocapitalization(.none)
-                    #endif
-                        .focused($focusedField, equals: .currentPassword)
-                        .disabled(viewModel.state == .resetting)
+                    .textInputAutocapitalization(.none)
+                    .focused($focusedField, equals: .currentPassword)
+                    .disabled(viewModel.state == .resetting)
                 }
             }
 
@@ -81,11 +79,9 @@ struct ResetUserPasswordView: View {
                     focusedField = .confirmNewPassword
                 }
                 .autocorrectionDisabled()
-                #if !os(macOS)
-                    .textInputAutocapitalization(.none)
-                #endif
-                    .focused($focusedField, equals: .newPassword)
-                    .disabled(viewModel.state == .resetting)
+                .textInputAutocapitalization(.none)
+                .focused($focusedField, equals: .newPassword)
+                .disabled(viewModel.state == .resetting)
             }
 
             Section {
@@ -98,11 +94,9 @@ struct ResetUserPasswordView: View {
                     viewModel.reset(current: currentPassword, new: confirmNewPassword)
                 }
                 .autocorrectionDisabled()
-                #if !os(macOS)
-                    .textInputAutocapitalization(.none)
-                #endif
-                    .focused($focusedField, equals: .confirmNewPassword)
-                    .disabled(viewModel.state == .resetting)
+                .textInputAutocapitalization(.none)
+                .focused($focusedField, equals: .confirmNewPassword)
+                .disabled(viewModel.state == .resetting)
             } header: {
                 Text(L10n.confirmNewPassword)
             } footer: {
@@ -161,7 +155,7 @@ struct ResetUserPasswordView: View {
                     viewModel.reset(current: currentPassword, new: confirmNewPassword)
                 }
 
-                if #available(iOS 26, macOS 26, *) {
+                if #available(iOS 26, *) {
                     Button(
                         L10n.save,
                         role: .confirm,

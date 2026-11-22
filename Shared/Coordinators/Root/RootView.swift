@@ -47,6 +47,11 @@ private struct RootContainerModifier: ViewModifier {
             .ignoresSafeArea()
             .modifier(OverlayToastModifier())
             .trackingFrame(for: .layoutContainer)
+            #elseif os(macOS)
+            content
+                .modifier(LocalUserAuthenticationModifier())
+                .modifier(OverlayToastModifier())
+                .trackingFrame(for: .layoutContainer)
             #else
             content
                 .modifier(LocalUserAuthenticationModifier())

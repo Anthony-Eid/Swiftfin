@@ -7,6 +7,7 @@
 //
 
 import JellyfinAPI
+import Logging
 import SwiftUI
 
 struct PlayButton: View {

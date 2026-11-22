@@ -118,6 +118,10 @@ struct VideoPlayer: View {
         .supportedOrientations(.all)
         .ignoresSafeArea()
         .persistentSystemOverlays(.hidden)
+        #if os(macOS)
+        .toolbar(.hidden, for: .windowToolbar)
+        #else
         .toolbar(.hidden, for: .navigationBar)
+        #endif
     }
 }

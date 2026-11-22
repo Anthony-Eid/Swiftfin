@@ -60,9 +60,7 @@ struct IdentifyItemView: View {
                         setter: { $0.isEmpty ? nil : Int($0) }
                     )
                 )
-                #if !os(macOS)
                 .keyboardType(.numberPad)
-                #endif
             }
 
             if query.isNotEmpty {

@@ -87,9 +87,7 @@ extension ServerUserPermissionsView {
                             .clamp(min: 1, max: 1000),
                         format: .number
                     )
-                    #if !os(macOS)
                     .keyboardType(.numberPad)
-                    #endif
                 } message: {
                     Text(L10n.enterCustomFailedLogins)
                 }
@@ -145,9 +143,7 @@ extension ServerUserPermissionsView {
                             .clamp(min: 1, max: 1000),
                         format: .number
                     )
-                    #if !os(macOS)
                     .keyboardType(.numberPad)
-                    #endif
                 } message: {
                     Text(L10n.enterCustomMaxSessions)
                 }

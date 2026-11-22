@@ -182,6 +182,7 @@ def config(i, name, extra):
 \t\t\t\t);
 \t\t\t\tMACOSX_DEPLOYMENT_TARGET = 26.0;
 \t\t\t\tMARKETING_VERSION = 1.0;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = "org.jellyfin.swiftfin.macos-fork";
 \t\t\t\tPRODUCT_NAME = Swiftfin;
 \t\t\t\tSDKROOT = macosx;
 \t\t\t\tSUPPORTED_PLATFORMS = macosx;

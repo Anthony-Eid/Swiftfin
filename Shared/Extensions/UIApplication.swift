@@ -45,4 +45,57 @@ extension UIApplication {
             }
     }
 }
+#else
+
+/// AppKit's `NSApplication` shares little with `UIApplication`; this stands
+/// in for the parts of `UIApplication` that the shared layer reads.
+@MainActor
+final class UIApplication {
+
+    static let shared = UIApplication()
+
+    nonisolated static var appVersion: String? {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+    }
+
+    nonisolated static var bundleVersion: String? {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+    }
+
+    #if DEBUG
+    nonisolated static var gitBranch: String? {
+        guard let url = Bundle.main.url(forResource: "GitBranch", withExtension: "txt"),
+              let contents = try? String(contentsOf: url, encoding: .utf8)
+        else { return nil }
+
+        let branch = contents.trimmingCharacters(in: .whitespacesAndNewlines)
+        return branch.isEmpty ? nil : branch
+    }
+    #endif
+
+    /// - Important: The Mac has no alternate app icons, always `nil`.
+    var alternateIconName: String? {
+        nil
+    }
+
+    /// - Important: The Mac has no alternate app icons, does nothing.
+    func setAlternateIconName(_ name: String?) async throws {}
+
+    func canOpenURL(_ url: URL) -> Bool {
+        NSWorkspace.shared.urlForApplication(toOpen: url) != nil
+    }
+
+    func open(_ url: URL) {
+        NSWorkspace.shared.open(url)
+    }
+
+    func open(_ url: URL, completionHandler: @escaping (Bool) -> Void) {
+        completionHandler(NSWorkspace.shared.open(url))
+    }
+
+    @discardableResult
+    func open(_ url: URL) async -> Bool {
+        NSWorkspace.shared.open(url)
+    }
+}
 #endif

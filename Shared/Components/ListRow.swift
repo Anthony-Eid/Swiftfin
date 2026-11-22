@@ -54,7 +54,9 @@ struct ListRow<Leading: View, Content: View>: View {
                 .padding(insets)
             }
             .foregroundStyle(.primary, .secondary)
+            #if !os(macOS)
             .contentShape(.contextMenuPreview, Rectangle())
+            #endif
             .if(viewLayout.isLarge) { $0.buttonStyle(.card) }
 
             if !viewLayout.isLarge, isListRowSeparatorVisible {

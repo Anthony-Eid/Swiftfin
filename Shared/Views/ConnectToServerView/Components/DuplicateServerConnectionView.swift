@@ -52,14 +52,14 @@ extension ConnectToServerView {
                     }
                     .listRowInsets(.zero)
                     .listRowBackground(Color.clear)
-                    #if os(iOS)
+                    #if os(iOS) || os(macOS)
                     .listRowSeparator(.hidden)
                     #endif
                     .fontWeight(.semibold)
                     .backport
                     .buttonStyle(.glassProminent.shadow(false))
                     .tint(.jellyfinPurple)
-                    #if os(iOS)
+                    #if os(iOS) || os(macOS)
                     .controlSize(.large)
                     #endif
                 }

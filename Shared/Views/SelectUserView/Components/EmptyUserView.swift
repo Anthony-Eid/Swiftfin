@@ -60,7 +60,7 @@ extension SelectUserView {
         @ContentBuilder
         var body: some View {
             GeometryReader { geometry in
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 ScrollView {
                     addUserButton
                         .frame(maxWidth: viewLayout.userGridColumns.itemWidth(for: geometry.size.width))

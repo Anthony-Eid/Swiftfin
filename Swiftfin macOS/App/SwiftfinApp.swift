@@ -11,29 +11,18 @@ import SwiftUI
 @main
 struct SwiftfinApp: App {
 
-    @ObservedObject
-    private var windowState = MacWindowState.shared
-
     init() {
         Self.configure()
     }
 
     var body: some Scene {
-        WindowGroup("Swiftfin") {
-            OverlayToastView {
-                WithUserAuthentication {
-                    RootView()
-                }
-            }
-            // the Picture in Picture window is deliberately tiny, so the
-            // browsing minimum would otherwise clamp it back to 900pt
-            .frame(
-                minWidth: windowState.isFloating ? 320 : 900,
-                minHeight: windowState.isFloating ? 180 : 600
-            )
+        WindowGroup {
+            RootView()
+                // Deep links go to an open window instead of opening another
+                .handlesExternalEvents(preferring: ["*"], allowing: ["*"])
+                .frame(minWidth: 720, minHeight: 480)
         }
         .defaultSize(width: 1280, height: 820)
         .windowResizability(.contentMinSize)
-        .windowToolbarStyle(.unified)
     }
 }

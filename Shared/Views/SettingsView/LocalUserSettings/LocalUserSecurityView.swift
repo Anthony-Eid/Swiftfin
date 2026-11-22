@@ -71,11 +71,12 @@ struct LocalUserSecurityView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(systemImage: "lock.fill") { securitySection
+        Form(systemImage: "lock.fill") {
+            securitySection
 
             if signInPolicy == .requirePin {
                 Section {
-                    #if os(iOS)
+                    #if os(iOS) || os(macOS)
                     TextField(L10n.hint, text: $pinHint)
                     #else
                     StateAdapter(initialValue: (isPresented: false, hint: pinHint)) { alert in
@@ -121,7 +122,7 @@ struct LocalUserSecurityView: View {
                 }
 
                 Group {
-                    #if os(iOS)
+                    #if os(iOS) || os(macOS)
                     if #available(iOS 26, *), !isChangingPIN {
                         Button(L10n.save, role: .confirm, action: saveAction)
                     } else {
@@ -142,7 +143,7 @@ struct LocalUserSecurityView: View {
     @ContentBuilder
     private var securitySection: some View {
         Section(L10n.security) {
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             Picker(L10n.security, selection: $signInPolicy)
             #else
             Toggle(
@@ -161,7 +162,7 @@ struct LocalUserSecurityView: View {
                 value: L10n.saveUserWithoutAuthDescription
             )
 
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             LabeledContent(
                 LocalUserAccessPolicy.requireDeviceAuthentication.displayTitle,
                 value: L10n.requireDeviceAuthDescription

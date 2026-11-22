@@ -19,7 +19,7 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
     case subtitles
     case refresh
     case delete
-    #if os(iOS)
+    #if os(iOS) || os(macOS)
     case editMetadata
     #endif
 
@@ -43,7 +43,7 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
             L10n.subtitles
         case .delete:
             L10n.delete
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         case .editMetadata:
             L10n.edit
         #endif
@@ -74,7 +74,7 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
             "captions.bubble"
         case .delete:
             "trash"
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         case .editMetadata:
             "pencil"
         #endif
@@ -119,7 +119,7 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
         .subtitles,
         .delete
     ]
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
             .prepending(.editMetadata)
         #endif
 }

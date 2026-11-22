@@ -63,8 +63,8 @@ struct ServerActivityFilterView: View {
                     .fontWeight(.semibold)
                     .backport
                     .buttonStyle(.glassProminent.shadow(false))
-                    #if os(iOS)
-                        .controlSize(.large)
+                    #if os(iOS) || os(macOS)
+                    .controlSize(.large)
                     #endif
                 } footer: {
                     Text(L10n.resetFilterFooter)
@@ -86,7 +86,7 @@ struct ServerActivityFilterView: View {
             }
 
             Group {
-                if #available(iOS 26, macOS 26, *) {
+                if #available(iOS 26, *) {
                     Button(L10n.save, role: .confirm, action: saveAction)
                 } else {
                     Button(L10n.save, action: saveAction)

@@ -27,7 +27,9 @@ extension NavigationRoute {
             AppPermissionsView()
         }
     }
+    #endif
 
+    #if os(iOS) || os(macOS)
     static func jellyfinWebPage(_ path: String, queryItems: [URLQueryItem] = []) -> NavigationRoute {
         NavigationRoute(
             id: "jellyfin-web-page",

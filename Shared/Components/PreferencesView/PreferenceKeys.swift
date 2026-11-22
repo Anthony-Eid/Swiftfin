@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-#if os(iOS)
+#if os(iOS) || os(macOS)
 struct KeyCommandsPreferenceKey: PreferenceKey {
 
     static let defaultValue: [KeyCommandAction] = []
@@ -17,6 +17,9 @@ struct KeyCommandsPreferenceKey: PreferenceKey {
         value.append(contentsOf: nextValue())
     }
 }
+#endif
+
+#if os(iOS)
 
 struct PreferredScreenEdgesDeferringSystemGesturesPreferenceKey: PreferenceKey {
 

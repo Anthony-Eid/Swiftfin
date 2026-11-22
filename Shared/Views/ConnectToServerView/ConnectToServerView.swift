@@ -64,13 +64,13 @@ struct ConnectToServerView: View {
             }
             .listRowInsets(.zero)
             .listRowBackground(Color.clear)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .listRowSeparator(.hidden)
             #endif
             .fontWeight(.semibold)
             .backport
             .buttonStyle(.glassProminent.shadow(false))
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .controlSize(.large)
             #endif
             .frame(maxHeight: 75)
@@ -84,14 +84,14 @@ struct ConnectToServerView: View {
             }
             .listRowInsets(.zero)
             .listRowBackground(Color.clear)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .listRowSeparator(.hidden)
             #endif
             .fontWeight(.semibold)
             .backport
             .buttonStyle(.glassProminent.shadow(false))
             .tint(theme.accentColor)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .controlSize(.large)
             #endif
             .frame(maxHeight: 75)
@@ -122,7 +122,7 @@ struct ConnectToServerView: View {
 
     @ContentBuilder
     private var contentView: some View {
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         List {
             connectSection
 

@@ -42,7 +42,11 @@ class ToastProxy: ObservableObject {
     }
 
     func present(_ title: String, systemName: String? = nil) {
+        #if os(macOS)
+        AccessibilityNotification.Announcement(title).post()
+        #else
         UIAccessibility.post(notification: .announcement, argument: title)
+        #endif
 
         present(Text(title), systemName: systemName)
     }

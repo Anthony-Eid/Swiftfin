@@ -79,7 +79,9 @@ struct UserButton: View {
     @ContentBuilder
     private var imageView: some View {
         image
+            #if !os(macOS)
             .hoverEffect(.highlight)
+            #endif
             .overlay(alignment: .bottomTrailing) {
                 if onDelete != nil, isEditing, isSelected {
                     Image(systemName: "checkmark.circle.fill")
@@ -91,7 +93,9 @@ struct UserButton: View {
                         )
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(theme.accentColor.overlayColor, theme.accentColor)
+                        #if !os(macOS)
                         .hoverEffect(.lift)
+                        #endif
                 }
             }
     }

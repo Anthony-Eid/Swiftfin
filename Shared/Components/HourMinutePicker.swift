@@ -249,4 +249,49 @@ private struct _HourMinutePickerView: PlatformViewRepresentable {
     }
 }
 
+// MARK: - macOS Picker
+
+#elseif os(macOS)
+
+private struct _HourMinutePickerView: View {
+
+    let interval: Binding<TimeInterval>
+    var maximumHours: Int = 24
+
+    private var hours: Binding<Int> {
+        Binding {
+            Int(interval.wrappedValue) / 3600
+        } set: { newValue in
+            interval.wrappedValue = TimeInterval(newValue * 3600 + minutes.wrappedValue * 60)
+        }
+    }
+
+    private var minutes: Binding<Int> {
+        Binding {
+            (Int(interval.wrappedValue) / 60) % 60
+        } set: { newValue in
+            interval.wrappedValue = TimeInterval(hours.wrappedValue * 3600 + newValue * 60)
+        }
+    }
+
+    var body: some View {
+        HStack {
+            Picker(L10n.hours, selection: hours) {
+                ForEach(0 ..< max(maximumHours, 1), id: \.self) { hour in
+                    Text("\(hour) \(L10n.hours)")
+                        .tag(hour)
+                }
+            }
+
+            Picker(L10n.minutes, selection: minutes) {
+                ForEach(0 ..< 60, id: \.self) { minute in
+                    Text("\(minute) \(L10n.minutes)")
+                        .tag(minute)
+                }
+            }
+        }
+        .labelsHidden()
+    }
+}
+
 #endif

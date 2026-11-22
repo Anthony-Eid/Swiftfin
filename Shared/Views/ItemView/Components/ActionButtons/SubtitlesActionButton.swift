@@ -19,7 +19,7 @@ extension ItemActionButtons {
         private var router
 
         private func action() {
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             router.route(to: .editSubtitles(item: provider.item))
             #else
             router.route(to: .searchSubtitle(viewModel: .init(item: provider.item)))

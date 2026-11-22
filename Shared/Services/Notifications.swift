@@ -154,6 +154,7 @@ extension Notifications.Key {
         Key("didStartPlayback")
     }
 
+    #if !os(macOS)
     static var interruption: Key<Void> {
         Key(AVAudioSession.interruptionNotification)
     }
@@ -165,9 +166,41 @@ extension Notifications.Key {
             UIAccessibility.isDarkerSystemColorsEnabled
         }
     }
+    #endif
 
     // MARK: - UIApplication
 
+    #if os(macOS)
+    // A Mac app is never suspended, hiding it is the closest
+    // equivalent to entering the background.
+    static var applicationDidBecomeActive: Key<Void> {
+        Key(NSApplication.didBecomeActiveNotification)
+    }
+
+    static var applicationDidEnterBackground: Key<Void> {
+        Key(NSApplication.didHideNotification)
+    }
+
+    static var applicationWillEnterForeground: Key<Void> {
+        Key(NSApplication.willUnhideNotification)
+    }
+
+    static var applicationWillResignActive: Key<Void> {
+        Key(NSApplication.willResignActiveNotification)
+    }
+
+    static var applicationWillTerminate: Key<Void> {
+        Key(NSApplication.willTerminateNotification)
+    }
+
+    static var sceneDidEnterBackground: Key<Void> {
+        Key(NSApplication.didHideNotification)
+    }
+
+    static var sceneWillEnterForeground: Key<Void> {
+        Key(NSApplication.willUnhideNotification)
+    }
+    #else
     static var applicationDidBecomeActive: Key<Void> {
         Key(UIApplication.didBecomeActiveNotification)
     }
@@ -216,4 +249,5 @@ extension Notifications.Key {
             (userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt).flatMap(AVAudioSession.RouteChangeReason.init(rawValue:))
         }
     }
+    #endif
 }

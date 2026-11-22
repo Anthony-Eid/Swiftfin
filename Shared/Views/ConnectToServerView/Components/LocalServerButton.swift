@@ -43,11 +43,7 @@ extension ConnectToServerView {
                 .padding(viewLayout.value(standard: 0, large: 16))
             }
             .foregroundStyle(.primary, .secondary)
-            #if os(macOS)
-                .buttonStyle(.borderless)
-            #else
-                .buttonStyle(.card)
-            #endif
+            .buttonStyle(.card)
         }
     }
 }

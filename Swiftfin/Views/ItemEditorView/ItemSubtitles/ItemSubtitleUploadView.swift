@@ -58,15 +58,15 @@ struct ItemSubtitleUploadView: View {
                     .backport
                     .buttonStyle(.glassProminent.shadow(false))
                     .tint(theme.accentColor)
-                    #if os(iOS)
-                        .controlSize(.large)
+                    #if os(iOS) || os(macOS)
+                    .controlSize(.large)
                     #endif
-                        .fileImporter(
-                            isPresented: isPresentingFileUpload,
-                            allowedContentTypes: SubtitleFormat.allCases.filter(\.isText).compactMap(\.utType)
-                        ) { result in
-                            selectedFile = try? result.get()
-                        }
+                    .fileImporter(
+                        isPresented: isPresentingFileUpload,
+                        allowedContentTypes: SubtitleFormat.allCases.filter(\.isText).compactMap(\.utType)
+                    ) { result in
+                        selectedFile = try? result.get()
+                    }
                 }
             }
         }
@@ -96,7 +96,7 @@ struct ItemSubtitleUploadView: View {
                 }
 
                 Group {
-                    if #available(iOS 26, macOS 26, *) {
+                    if #available(iOS 26, *) {
                         Button(L10n.save, role: .confirm, action: saveAction)
                     } else {
                         Button(L10n.save, action: saveAction)

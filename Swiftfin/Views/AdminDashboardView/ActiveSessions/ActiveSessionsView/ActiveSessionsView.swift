@@ -162,7 +162,7 @@ struct ActiveSessionsView: View {
                 ProgressView()
             }
 
-            let systemImage = if #available(iOS 26, macOS 26, *) {
+            let systemImage = if #available(iOS 26, *) {
                 "line.3.horizontal.decrease"
             } else {
                 "line.3.horizontal.decrease.circle"

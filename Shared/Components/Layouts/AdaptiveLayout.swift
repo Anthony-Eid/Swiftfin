@@ -26,7 +26,11 @@ struct ViewLayout: Equatable {
 
     var size: CGSize = .zero
     var isRegularWidth: Bool = false
+    #if os(macOS)
+    var dynamicTypeSize: DynamicTypeSize = .large
+    #else
     var contentSizeCategory: UIContentSizeCategory = .large
+    #endif
     var presentation: Presentation = .current
 
     static let platformDefault = ViewLayout()
@@ -36,7 +40,11 @@ struct ViewLayout: Equatable {
     }
 
     var isAccessibilitySize: Bool {
+        #if os(macOS)
+        dynamicTypeSize.isAccessibilitySize
+        #else
         contentSizeCategory.isAccessibilityCategory
+        #endif
     }
 
     var isCompact: Bool {
@@ -150,6 +158,19 @@ struct ViewLayout: Equatable {
         return edges
     }
 
+    #if os(macOS)
+    init(
+        size: CGSize = .zero,
+        isRegularWidth: Bool = false,
+        dynamicTypeSize: DynamicTypeSize = .large,
+        presentation: Presentation = .current
+    ) {
+        self.size = size
+        self.isRegularWidth = isRegularWidth
+        self.dynamicTypeSize = dynamicTypeSize
+        self.presentation = presentation
+    }
+    #else
     init(
         size: CGSize = .zero,
         isRegularWidth: Bool = false,
@@ -169,6 +190,7 @@ struct ViewLayout: Equatable {
             contentSizeCategory: traits.preferredContentSizeCategory
         )
     }
+    #endif
 }
 
 @propertyWrapper
@@ -183,14 +205,25 @@ struct AdaptiveLayout: DynamicProperty {
     private var containerFrame
 
     var wrappedValue: ViewLayout {
+        #if os(macOS)
+        // AppKit has no size classes, a window is treated as regular
+        // and `ViewLayout.isCompact` goes by the tracked container width.
+        ViewLayout(
+            size: containerFrame?.frame.size ?? .zero,
+            isRegularWidth: true,
+            dynamicTypeSize: dynamicTypeSize
+        )
+        #else
         ViewLayout(
             size: containerFrame?.frame.size ?? .zero,
             isRegularWidth: horizontalSizeClass == .regular,
             contentSizeCategory: dynamicTypeSize.contentSizeCategory
         )
+        #endif
     }
 }
 
+#if !os(macOS)
 private extension DynamicTypeSize {
 
     var contentSizeCategory: UIContentSizeCategory {
@@ -211,6 +244,7 @@ private extension DynamicTypeSize {
         }
     }
 }
+#endif
 
 struct EdgePaddingModifier: ViewModifier {
 

@@ -8,6 +8,24 @@
 
 import SwiftUI
 
+#if os(macOS)
+/// There is no hosting controller to configure on macOS. Key commands are the
+/// only preference with an equivalent, and are served by the enclosing window.
+struct PreferencesView<Content: View>: View {
+
+    private let content: Content
+
+    init(@ContentBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    @ContentBuilder
+    var body: some View {
+        content
+            .modifier(KeyCommandsResponder())
+    }
+}
+#else
 struct PreferencesView<Content: View>: UIViewControllerRepresentable {
 
     private let content: Content
@@ -28,3 +46,4 @@ struct PreferencesView<Content: View>: UIViewControllerRepresentable {
         }
     }
 }
+#endif

@@ -63,16 +63,12 @@ final class NavigationCoordinator: ObservableObject {
             )
 
         case .fullscreen:
-            #if os(macOS)
-            path.append(route)
-            #else
             withAnimation {
                 presentedFullScreen = .init(
                     route: route,
                     coordinator: .init()
                 )
             }
-            #endif
         }
         #endif
     }

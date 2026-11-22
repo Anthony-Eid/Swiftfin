@@ -264,7 +264,7 @@ struct SelectUserView: View {
             userToolbar
             #endif
         }
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .safeAreaInset(edge: .bottom, spacing: 0) {
                 userToolbar
             }
@@ -334,7 +334,7 @@ struct SelectUserView: View {
                     .frame(width: viewLayout.value(standard: 30, large: 100))
             }
 
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             if viewLayout.isCompact {
                 ToolbarItem(placement: .topBarLeading) {
                     if isEditing {
@@ -404,7 +404,7 @@ struct SelectUserView: View {
         .background {
             splashScreenBackground
         }
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .ignoresSafeArea(.keyboard, edges: .bottom)
         #endif
         .onChange(of: isEditing) {

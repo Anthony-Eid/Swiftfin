@@ -122,7 +122,7 @@ struct EditFiltersView: View {
         }
         .topBarTrailing {
             Group {
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 if #available(iOS 26, *) {
                     Button(L10n.save, role: .confirm, action: save)
                 } else {

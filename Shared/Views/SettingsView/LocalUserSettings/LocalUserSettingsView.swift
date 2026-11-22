@@ -25,7 +25,7 @@ struct LocalUserSettingsView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm {
+        Form {
             #if os(iOS) || os(macOS)
             if let userSession = imageViewModel.userSession {
                 StateAdapter(initialValue: false) { isPhotoPickerPresented in

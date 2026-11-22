@@ -40,6 +40,11 @@ final class RootCoordinator: ObservableObject {
 
     private var started = false
 
+    #if os(macOS)
+    /// Every window has its own coordinator, while the data stack is set up once.
+    private static var dataStackSetup: Task<Void, Error>?
+    #endif
+
     @Function(\Action.Cases.start)
     private func _start() async throws {
         guard !started else { return }
@@ -47,7 +52,15 @@ final class RootCoordinator: ObservableObject {
         started = true
 
         do {
+            #if os(macOS)
+            let setup = Self.dataStackSetup ?? Task {
+                try await SwiftfinStore.setupDataStack()
+            }
+            Self.dataStackSetup = setup
+            try await setup.value
+            #else
             try await SwiftfinStore.setupDataStack()
+            #endif
         } catch {
             throw AppStartupError.dataStack(error)
         }

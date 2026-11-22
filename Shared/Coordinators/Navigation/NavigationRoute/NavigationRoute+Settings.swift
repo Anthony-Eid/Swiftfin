@@ -63,7 +63,7 @@ extension NavigationRoute {
         }
     }
 
-    #if os(iOS)
+    #if os(iOS) || os(macOS)
     static var adminDashboard: NavigationRoute {
         NavigationRoute(
             id: "adminDashboard"

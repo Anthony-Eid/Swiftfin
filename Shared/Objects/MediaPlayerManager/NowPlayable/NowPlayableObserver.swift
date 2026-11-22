@@ -187,6 +187,8 @@ final class NowPlayableObserver: MediaSessionObserver {
             .sink { [weak self] _ in self?.updateRemoteCommands() }
             .store(in: &cancellables)
 
+        // AVAudioSession, and with it interruptions and route changes, does not exist on macOS.
+        #if !os(macOS)
         Notifications[.avAudioSessionInterruption]
             .publisher
             .receive(on: DispatchQueue.main)
@@ -205,6 +207,7 @@ final class NowPlayableObserver: MediaSessionObserver {
                 self?.mediaSession?.setPlaybackRequestStatus(status: .paused)
             }
             .store(in: &cancellables)
+        #endif
 
         updateRemoteCommands()
     }
@@ -365,6 +368,11 @@ final class NowPlayableObserver: MediaSessionObserver {
         var info = center.nowPlayingInfo ?? [:]
         metadata.update(&info)
         center.nowPlayingInfo = info
+
+        #if os(macOS)
+        // Without an audio session, macOS takes the Now Playing state from the app.
+        center.playbackState = mediaSession.playbackRequestStatus == .playing ? .playing : .paused
+        #endif
     }
 
     private func updateRemoteCommands() {
@@ -477,6 +485,10 @@ final class NowPlayableObserver: MediaSessionObserver {
         playbackRequestStateBeforeInterruption = nil
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
 
+        #if os(macOS)
+        MPNowPlayingInfoCenter.default().playbackState = .stopped
+        ownsAudioSession = false
+        #else
         do {
             if ownsAudioSession {
                 try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
@@ -485,8 +497,10 @@ final class NowPlayableObserver: MediaSessionObserver {
         } catch {
             logger.warning("Unable to stop audio session: \(error.localizedDescription)")
         }
+        #endif
     }
 
+    #if !os(macOS)
     private func handleInterruption(type: AVAudioSession.InterruptionType, options: AVAudioSession.InterruptionOptions) {
         guard ownsAudioSession else { return }
 
@@ -512,6 +526,7 @@ final class NowPlayableObserver: MediaSessionObserver {
             break
         }
     }
+    #endif
 
     private func configureAudioSession() {
         do {
@@ -524,12 +539,14 @@ final class NowPlayableObserver: MediaSessionObserver {
     private func startSession() throws {
         guard mediaSession?.isRemotePlayback != true else { return }
 
+        #if !os(macOS)
         let session = AVAudioSession.sharedInstance()
         let isAudio = mediaSession?.item.nowPlayableStaticMetadata().mediaType == .audio
 
         try session.setCategory(.playback, mode: isAudio ? .default : .moviePlayback)
         try session.setSupportsMultichannelContent(true)
         try session.setActive(true)
+        #endif
 
         ownsAudioSession = true
     }

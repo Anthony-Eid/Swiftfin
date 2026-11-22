@@ -36,6 +36,7 @@ extension HorizontalEdge {
     }
 }
 
+#if !os(macOS)
 extension Edge.Set {
 
     var asUIRectEdge: UIRectEdge {
@@ -59,3 +60,4 @@ extension Edge.Set {
         }
     }
 }
+#endif

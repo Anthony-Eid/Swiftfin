@@ -177,7 +177,9 @@ struct VideoPlayerSettingsView: View {
                     .clamp(min: 1, max: 600),
                 format: .number
             )
+            #if !os(macOS)
             .keyboardType(.numberPad)
+            #endif
         }
     }
 

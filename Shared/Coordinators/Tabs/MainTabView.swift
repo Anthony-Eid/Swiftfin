@@ -132,6 +132,10 @@ struct MainTabView: View {
     @ContentBuilder
     var body: some View {
         tabContent()
+            #if os(macOS)
+            .windowCoverHost()
+            .environmentObject(tabCoordinator)
+            #endif
             .onChange(of: userSessionManager.pendingDeepLink) {
                 routePendingDeepLink(userSessionManager.consumePendingDeepLink())
             }

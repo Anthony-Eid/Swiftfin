@@ -72,7 +72,7 @@ struct LocalUserAuthenticationModifier: ViewModifier {
     }
 
     private func handleDeviceAuthentication(reason: String?) async throws {
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         let context = LAContext()
         try context.canEvaluatePolicy(.deviceOwnerAuthentication)
         try await context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason ?? "")

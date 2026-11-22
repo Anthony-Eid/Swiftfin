@@ -12,6 +12,7 @@ import UIKit
 import AppKit
 #endif
 
+#if !os(macOS)
 extension VideoPlayer {
 
     final class LayoutView: UIView {
@@ -45,3 +46,4 @@ extension VideoPlayer {
         }
     }
 }
+#endif

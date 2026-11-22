@@ -56,7 +56,7 @@ struct ItemRefreshView: View {
             router.dismiss()
         }
         .errorMessage($viewModel.error)
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .topBarTrailing {
             Button(L10n.run, action: onRun)
                 .backport
@@ -70,7 +70,7 @@ struct ItemRefreshView: View {
     private var contentView: some View {
         Form(systemImage: "arrow.clockwise") {
             Section {
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 Picker(L10n.type, selection: $refreshType)
                 #else
                 ListRowMenu(L10n.type, selection: $refreshType)

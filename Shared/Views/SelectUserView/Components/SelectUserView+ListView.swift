@@ -94,7 +94,7 @@ extension SelectUserView {
                         view
                             .coordinatedFocus(Focus.focusedUserButton.rawValue)
                     }
-                    #elseif os(iOS)
+                    #elseif os(iOS) || os(macOS)
                     .swipeActions {
                         if !isEditing {
                             Button(
@@ -111,7 +111,7 @@ extension SelectUserView {
                 .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .scrollContentBackground(.hidden)
             #else
             .edgePadding()

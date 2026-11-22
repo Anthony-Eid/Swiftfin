@@ -9,6 +9,7 @@
 import Defaults
 import SwiftUI
 
+#if !os(macOS)
 // TODO: organize into a better structure
 // TODO: add footer descriptions to each explaining the
 //       the gesture + why horizontal pan/swipe caveat
@@ -81,3 +82,4 @@ struct GestureSettingsView: View {
         .navigationTitle(L10n.gestures)
     }
 }
+#endif

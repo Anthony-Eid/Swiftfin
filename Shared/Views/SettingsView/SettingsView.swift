@@ -13,7 +13,7 @@ import SwiftUI
 
 struct SettingsView: View {
 
-    #if os(iOS)
+    #if os(iOS) || os(macOS)
     @Default
     private var appearance: AppAppearance
     #endif
@@ -32,7 +32,7 @@ struct SettingsView: View {
 
     init() {
         let userID = Container.shared.userSessionManager().currentSession?.user.id ?? "default"
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         _appearance = Default(.userAppearance(userID: userID))
         #endif
         _accentColor = Default(.userAccentColor(userID: userID))
@@ -47,7 +47,7 @@ struct SettingsView: View {
             customizeSection
             diagnosticsSection
         }
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .navigationTitle(L10n.settings)
             .navigationBarCloseButton {
                 router.dismiss()
@@ -81,7 +81,7 @@ struct SettingsView: View {
                     .labelStyle(.sectionFooterWithImage(imageStyle: .orange))
                 }
 
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 if userSession.userData.policy?.isAdministrator == true {
                     ChevronButton(L10n.dashboard) {
                         router.route(to: .adminDashboard)
@@ -109,14 +109,14 @@ struct SettingsView: View {
             }
             .listRowInsets(.zero)
             .listRowBackground(Color.clear)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .listRowSeparator(.hidden)
             #endif
             .fontWeight(.semibold)
             .backport
             .buttonStyle(.glassProminent.shadow(false))
             .tint(theme.accentColor)
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .controlSize(.large)
             #endif
         }
@@ -127,7 +127,7 @@ struct SettingsView: View {
     @ContentBuilder
     private var customizeSection: some View {
         Section {
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             Picker(L10n.appearance, selection: $appearance)
             #endif
 

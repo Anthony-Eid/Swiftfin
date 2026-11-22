@@ -70,7 +70,7 @@ extension CustomDeviceProfilesView {
                     }
 
                     Group {
-                        #if os(iOS)
+                        #if os(iOS) || os(macOS)
                         if #available(iOS 26, *) {
                             Button(L10n.save, role: .confirm, action: saveAction)
                         } else {
@@ -85,50 +85,51 @@ extension CustomDeviceProfilesView {
                     }
                     .enabled(isValid)
                 }
-            #if os(iOS)
+                #if os(iOS) || os(macOS)
                 .navigationBarBackButtonHidden()
                 .navigationBarCloseButton {
                     isPresentingNotSaved = true
                 }
-            #else
+                #else
                 .onExitCommand {
                     isPresentingNotSaved = true
                 }
-            #endif
+                #endif
         }
 
         @ContentBuilder
         private var contentView: some View {
-            Form(systemImage: "doc") { Section(L10n.behavior) {
-                Toggle(L10n.useAsTranscodingProfile, isOn: $profile.useAsTranscodingProfile)
-            }
-
-            Section {
-                ChevronButton {
-                    router.route(to: .editDeviceProfileAudio(selection: $profile.audio))
-                } label: {
-                    componentLabel(L10n.audio, value: profile.audio.map(\.displayTitle).joined(separator: ", "))
+            Form(systemImage: "doc") {
+                Section(L10n.behavior) {
+                    Toggle(L10n.useAsTranscodingProfile, isOn: $profile.useAsTranscodingProfile)
                 }
 
-                ChevronButton {
-                    router.route(to: .editDeviceProfileVideo(selection: $profile.video))
-                } label: {
-                    componentLabel(L10n.video, value: profile.video.map(\.displayTitle).joined(separator: ", "))
-                }
+                Section {
+                    ChevronButton {
+                        router.route(to: .editDeviceProfileAudio(selection: $profile.audio))
+                    } label: {
+                        componentLabel(L10n.audio, value: profile.audio.map(\.displayTitle).joined(separator: ", "))
+                    }
 
-                ChevronButton {
-                    router.route(to: .editDeviceProfileContainer(selection: $profile.container))
-                } label: {
-                    componentLabel(L10n.containers, value: profile.container.map(\.displayTitle).joined(separator: ", "))
+                    ChevronButton {
+                        router.route(to: .editDeviceProfileVideo(selection: $profile.video))
+                    } label: {
+                        componentLabel(L10n.video, value: profile.video.map(\.displayTitle).joined(separator: ", "))
+                    }
+
+                    ChevronButton {
+                        router.route(to: .editDeviceProfileContainer(selection: $profile.container))
+                    } label: {
+                        componentLabel(L10n.containers, value: profile.container.map(\.displayTitle).joined(separator: ", "))
+                    }
+                } header: {
+                    Text(L10n.components)
+                } footer: {
+                    if !isValid {
+                        Label(L10n.missingCodecValues, systemImage: "exclamationmark.circle.fill")
+                            .labelStyle(.sectionFooterWithImage(imageStyle: .orange))
+                    }
                 }
-            } header: {
-                Text(L10n.components)
-            } footer: {
-                if !isValid {
-                    Label(L10n.missingCodecValues, systemImage: "exclamationmark.circle.fill")
-                        .labelStyle(.sectionFooterWithImage(imageStyle: .orange))
-                }
-            }
             }
         }
 

@@ -11,6 +11,7 @@ import Logging
 import MediaPlayer
 import SwiftUI
 
+#if !os(macOS)
 // TODO: pause when center tapped when overlay dismissed
 //       - can be done entirely on playback controls layer
 // TODO: account for gesture state active when item changes
@@ -1407,4 +1408,5 @@ extension VideoPlayer.UIContainerViewController: UIGestureRecognizerDelegate {
         true
     }
 }
+#endif
 #endif

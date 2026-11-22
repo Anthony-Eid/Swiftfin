@@ -20,11 +20,11 @@ struct NavigationBarCloseButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         #if os(macOS)
         content.toolbar {
-            ToolbarItem(placement: .navigation) {
-                Button(action: action) {
-                    Image(systemName: "xmark")
-                }
-                .disabled(disabled)
+            // The only leading placement that a sheet's window shows,
+            // and it is given the escape key.
+            ToolbarItem(placement: .cancellationAction) {
+                Button(L10n.close, action: action)
+                    .disabled(disabled)
             }
         }
         #else

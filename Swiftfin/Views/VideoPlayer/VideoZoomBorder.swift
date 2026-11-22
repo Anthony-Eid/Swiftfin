@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if !os(macOS)
 struct VideoZoomBorder: View {
 
     let isVisible: Bool
@@ -25,3 +26,4 @@ struct VideoZoomBorder: View {
         .accessibilityHidden(true)
     }
 }
+#endif

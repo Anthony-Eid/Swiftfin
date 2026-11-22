@@ -27,7 +27,7 @@ struct SliderContainer<Value: BinaryFloatingPoint>: View {
     private var onEditingChanged: (Bool) -> Void
     private var onEditingCancelled: () -> Void = {}
 
-    #if os(iOS)
+    #if !os(tvOS)
     private var translationBinding: Binding<CGPoint> = .constant(.zero)
     private var valueDamping: Double = 1
     private var gesturePadding: CGFloat = 0
@@ -111,7 +111,7 @@ extension SliderContainer {
     }
 }
 
-#if os(iOS)
+#if !os(tvOS)
 extension SliderContainer {
 
     func translation(_ binding: Binding<CGPoint>) -> Self {

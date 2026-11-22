@@ -23,6 +23,55 @@ struct AVVideoPlayerView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
     }
 
+    #if os(macOS)
+    /// The engine owns the layer so playback and PiP can continue while the surface is unmounted.
+    private struct PlayerSurface: NSViewRepresentable {
+
+        let player: AVMediaPlayer
+
+        func makeNSView(context: Context) -> SurfaceView {
+            SurfaceView(player: player)
+        }
+
+        func updateNSView(_ nsView: SurfaceView, context: Context) {}
+    }
+
+    private final class SurfaceView: NSView {
+
+        private let player: AVMediaPlayer
+
+        init(player: AVMediaPlayer) {
+            self.player = player
+            super.init(frame: .zero)
+            let layer = CALayer()
+            layer.addSublayer(player.playerLayer)
+            self.layer = layer
+            wantsLayer = true
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func layout() {
+            super.layout()
+
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            player.playerLayer.frame = bounds
+            CATransaction.commit()
+        }
+
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+
+            guard window != nil else { return }
+
+            player.videoSurfaceDidMoveToWindow()
+        }
+    }
+    #else
     /// The engine owns the layer so playback and PiP can continue while the surface is unmounted.
     private struct PlayerSurface: UIViewRepresentable {
 
@@ -63,4 +112,5 @@ struct AVVideoPlayerView: View {
             player.videoSurfaceDidMove(to: window)
         }
     }
+    #endif
 }

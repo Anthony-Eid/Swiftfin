@@ -15,6 +15,7 @@ import UIKit
 import AppKit
 #endif
 
+#if !os(macOS)
 extension VideoPlayer.UIContainerViewController {
 
     func handlePanGesture(
@@ -375,3 +376,4 @@ extension VideoPlayer.UIContainerViewController {
         }
     }
 }
+#endif

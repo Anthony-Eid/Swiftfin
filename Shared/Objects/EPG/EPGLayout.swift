@@ -6,10 +6,10 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
-#if canImport(UIKit)
-import UIKit
-#elseif os(macOS)
+#if os(macOS)
 import AppKit
+#else
+import UIKit
 #endif
 
 struct EPGLayout: Equatable {
@@ -28,12 +28,23 @@ struct EPGLayout: Equatable {
     ) {
         let minimumRowHeight: CGFloat = viewLayout.value(standard: 74, large: 120)
         let minimumRulerHeight: CGFloat = viewLayout.value(standard: 28, large: 44)
+        #if os(macOS)
+        // macOS has no Dynamic Type
+        func lineHeight(_ style: NSFont.TextStyle) -> CGFloat {
+            let font = NSFont.preferredFont(forTextStyle: style, options: [:])
+            return font.ascender - font.descender + font.leading
+        }
+
+        let preferredProgramHeight = lineHeight(.footnote) + lineHeight(.caption2) + 18
+        let preferredRulerHeight = lineHeight(.caption2) + 12
+        #else
         let traits = UITraitCollection(preferredContentSizeCategory: viewLayout.contentSizeCategory)
         let preferredProgramHeight =
             UIFont.preferredFont(forTextStyle: .footnote, compatibleWith: traits).lineHeight +
             UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: traits).lineHeight +
             18
         let preferredRulerHeight = UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: traits).lineHeight + 12
+        #endif
 
         self.channelColumnWidth = channelColumnWidth ?? viewLayout.value(
             standard: viewLayout.value(compact: 84, regular: 110),

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if !os(macOS)
 // TODO: Button recognizers for tvOS?
 //       - .menu, .select
 
@@ -155,3 +156,4 @@ class UIPreferencesHostingController: UIHostingController<AnyView> {
     }
     #endif
 }
+#endif

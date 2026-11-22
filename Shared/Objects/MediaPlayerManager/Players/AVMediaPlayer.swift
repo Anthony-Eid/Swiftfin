@@ -111,7 +111,9 @@ final class AVMediaPlayer: NSObject, MediaPlayer, MediaPlayerMetadataProviding {
         playerItem.add(output)
         subtitleOutput = output
 
+        #if !os(macOS)
         playerItem.externalMetadata = item.baseItem.avMetadata
+        #endif
         player.replaceCurrentItem(with: playerItem)
         observePlayback(of: playerItem, item: item, generation: generation)
 
@@ -125,7 +127,9 @@ final class AVMediaPlayer: NSObject, MediaPlayer, MediaPlayerMetadataProviding {
     func updateMetadata(for item: MediaPlayerItem, artwork: UIImage?) {
         guard loadedItem === item, let playerItem = player.currentItem else { return }
 
+        #if !os(macOS)
         playerItem.externalMetadata = item.baseItem.nowPlayableStaticMetadata().avMetadata(artwork: artwork)
+        #endif
     }
 
     func play() {
@@ -593,6 +597,19 @@ extension AVMediaPlayer: AVPictureInPictureControllerDelegate {
     }
 }
 
+#if os(macOS)
+extension AVMediaPlayer: MediaPlayerVolumeProviding {
+
+    var volume: Double {
+        Double(player.volume)
+    }
+
+    func setVolume(_ volume: Double) {
+        player.volume = Float(volume)
+    }
+}
+#endif
+
 // MARK: - Video surface
 
 extension AVMediaPlayer: VideoMediaPlayer {
@@ -602,6 +619,11 @@ extension AVMediaPlayer: VideoMediaPlayer {
         AVVideoPlayerView(player: self, layout: layout)
     }
 
+    #if os(macOS)
+    func videoSurfaceDidMoveToWindow() {
+        setupPiP()
+    }
+    #else
     func videoSurfaceDidMove(to window: UIWindow) {
         setupPiP()
 
@@ -609,6 +631,7 @@ extension AVMediaPlayer: VideoMediaPlayer {
         displayManager = window.avDisplayManager
         #endif
     }
+    #endif
 }
 
 #if os(tvOS)

@@ -112,7 +112,7 @@ struct ItemActionButtons: View {
             provider.item.canEditSubtitles
         case .delete:
             provider.item.canDelete == true
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         case .editMetadata:
             provider.item.canEditMetadata
         #endif
@@ -171,7 +171,7 @@ struct ItemActionButtons: View {
                 Subtitles()
             case .delete:
                 Delete()
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             case .editMetadata:
                 Edit()
             #endif

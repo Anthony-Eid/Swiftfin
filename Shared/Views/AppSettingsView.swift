@@ -25,7 +25,7 @@ struct AppSettingsView: View {
     @Default(.signOutOnClose)
     private var signOutOnClose
 
-    #if os(iOS)
+    #if os(iOS) || os(macOS)
     @Default(.appAppearance)
     private var appearance
     #endif
@@ -66,11 +66,13 @@ struct AppSettingsView: View {
                 }
             }
 
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             Section(L10n.customize) {
+                #if os(iOS)
                 ChevronButton(L10n.appIcon) {
                     router.route(to: .appIconSelector)
                 }
+                #endif
 
                 if !selectUserUseSplashscreen {
                     Picker(

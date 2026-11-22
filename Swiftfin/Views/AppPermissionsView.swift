@@ -9,6 +9,8 @@
 import OrderedCollections
 import SwiftUI
 
+// The permissions that are requested in-app do not exist on macOS
+#if !os(macOS)
 struct AppPermissionsView: View {
 
     @State
@@ -101,3 +103,4 @@ struct AppPermissionsView: View {
         }
     }
 }
+#endif

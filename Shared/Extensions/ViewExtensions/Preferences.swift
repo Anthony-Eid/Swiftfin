@@ -10,7 +10,7 @@ import SwiftUI
 
 extension View {
 
-    #if os(iOS)
+    #if os(iOS) || os(macOS)
     @ContentBuilder
     func keyCommands(@ArrayBuilder<KeyCommandAction> _ commands: () -> [KeyCommandAction]) -> some View {
         preference(key: KeyCommandsPreferenceKey.self, value: commands())
@@ -24,10 +24,10 @@ extension View {
     }
     #endif
 
-    /// - Important: This does nothing on tvOS.
+    /// - Important: This does nothing on tvOS and macOS.
     @ContentBuilder
     func supportedOrientations(_ supportedOrientations: UIInterfaceOrientationMask) -> some View {
-        #if os(tvOS)
+        #if os(tvOS) || os(macOS)
         self
         #else
         preference(key: SupportedOrientationsPreferenceKey.self, value: supportedOrientations)

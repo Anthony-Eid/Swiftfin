@@ -90,6 +90,23 @@ struct NavigationInjectionView: View {
             }
             .transformEnvironment(\.frameForParentView) { $0[.tabView] = nil }
         }
+        #elseif os(macOS)
+        .sheet(
+            item: $coordinator.presentedSheet
+        ) {
+            coordinator.presentedSheet = nil
+        } content: { presentedRoute in
+            NavigationInjectionView(coordinator: presentedRoute.coordinator) {
+                presentedRoute.route
+                    .destination
+                    .removingViewContext(.isTabRoot)
+            }
+            // A sheet is its own window, which takes the size of its content
+            .frame(minWidth: 520, idealWidth: 640, minHeight: 440, idealHeight: 640)
+        }
+        .windowCover(item: $coordinator.presentedFullScreen) { route in
+            coordinator.path.append(route)
+        }
         #else
         .sheet(
             item: $coordinator.presentedSheet

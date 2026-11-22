@@ -63,7 +63,9 @@ extension VideoPlayer {
                 PosterImage(item: element, type: displayType, size: size)
                     .overlay { element.posterOverlay(for: displayType).posterStyle(displayType) }
                     .subtleShadow()
+                #if !os(macOS)
                     .hoverEffect(.highlight)
+                #endif
                     .frame(width: 110)
                     .padding(.vertical, 8)
             } content: {
@@ -119,7 +121,9 @@ extension VideoPlayer {
                 ))
                 .itemSpacing(viewLayout.itemSpacing)
                 .scrollBehavior(.continuousLeadingEdge)
+                #if !os(macOS)
                 .contentInsetAdjustmentBehavior(.never)
+                #endif
                 .focusSection()
             }
             .onChange(of: currentElementID) { _, newID in

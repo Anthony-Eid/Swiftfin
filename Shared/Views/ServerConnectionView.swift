@@ -20,16 +20,16 @@ struct ServerConnectionView: View {
     @Router
     private var router
 
-    #if os(iOS)
+    #if os(macOS)
+    // Lists can always be reordered on macOS, there is no edit mode.
+    private let isEditing = false
+    #else
     @State
     private var editMode: EditMode = .inactive
 
     private var isEditing: Bool {
         editMode.isEditing
     }
-    #else
-    @State
-    private var isEditing = false
     #endif
 
     @ContentBuilder
@@ -119,28 +119,26 @@ struct ServerConnectionView: View {
                 .disabled(isEditing)
             }
         }
-        #if os(iOS)
+        #if !os(macOS)
         .environment(\.editMode, $editMode)
         #endif
         .animation(.linear(duration: 0.1), value: isEditing)
         .animation(.linear(duration: 0.1), value: viewModel.connections)
         .animation(.linear(duration: 0.1), value: viewModel.isAutoSwitchEnabled)
         .navigationTitle(L10n.connections)
+        #if !os(macOS)
         .topBarTrailing {
             if viewModel.connections.count > 1 {
                 Button(isEditing ? L10n.done : L10n.edit) {
-                    #if os(iOS)
                     editMode = isEditing ? .inactive : .active
-                    #else
-                    isEditing.toggle()
-                    #endif
                 }
-                #if os(iOS)
+                #if os(iOS) || os(macOS)
                 .backport
-                .buttonStyle(.glass)
-                .controlSize(.small)
+                    .buttonStyle(.glass)
+                    .controlSize(.small)
                 #endif
             }
         }
+        #endif
     }
 }

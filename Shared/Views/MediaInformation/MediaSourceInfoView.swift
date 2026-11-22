@@ -75,7 +75,7 @@ struct MediaSourceInfoView: PresentationView {
             .navigationBarCloseButton {
                 router.dismiss()
             }
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             .topBarTrailing {
                 source.shareLink
             }

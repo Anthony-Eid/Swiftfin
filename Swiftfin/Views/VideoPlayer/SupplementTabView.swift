@@ -13,6 +13,7 @@ import UIKit
 import AppKit
 #endif
 
+#if !os(macOS)
 /// `TabView` has an "overscroll" bug on some index selections, workaround with manual `UIPageViewController`
 struct SupplementTabView<Content: View>: PlatformViewControllerRepresentable {
 
@@ -279,3 +280,4 @@ struct SupplementTabView<Content: View>: PlatformViewControllerRepresentable {
         }
     }
 }
+#endif

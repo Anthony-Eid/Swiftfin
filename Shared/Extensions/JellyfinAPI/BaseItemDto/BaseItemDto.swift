@@ -242,7 +242,11 @@ extension BaseItemDto {
             .posterStyle(content.preferredPosterDisplayType)
             .frame(width: 400)
 
+            #if os(macOS)
+            return ImageRenderer(content: failedSystemContentView).nsImage
+            #else
             return ImageRenderer(content: failedSystemContentView).uiImage
+            #endif
         }
 
         let displayType: PosterDisplayType = firstImage.size.height > firstImage.size.width ? .portrait : content.preferredPosterDisplayType
@@ -259,7 +263,11 @@ extension BaseItemDto {
         .posterAspectRatio(displayType, contentMode: .fit)
         .frame(width: 400)
 
+        #if os(macOS)
+        return ImageRenderer(content: transformedImage).nsImage
+        #else
         return ImageRenderer(content: transformedImage).uiImage
+        #endif
     }
 
     @MainActor

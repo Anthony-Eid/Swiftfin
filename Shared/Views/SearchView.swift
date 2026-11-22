@@ -134,7 +134,7 @@ struct SearchView: View {
         #if os(tvOS)
         .modifier(SearchSafeAreaModifier())
         #endif
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .navigationBarFilterDrawer(
             viewModel: viewModel.filterViewModel,
             types: enabledDrawerFilters

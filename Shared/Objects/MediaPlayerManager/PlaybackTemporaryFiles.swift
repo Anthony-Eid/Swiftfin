@@ -66,7 +66,11 @@ final class PlaybackTemporaryFiles {
             image = Task { [weak self] in
                 guard let file = await self?.file(for: id) else { return nil }
 
+                #if os(macOS)
+                return UIImage(contentsOfFile: file.path)
+                #else
                 return await UIImage(contentsOfFile: file.path)?.byPreparingForDisplay()
+                #endif
             }
 
             latestImage = (id, image)

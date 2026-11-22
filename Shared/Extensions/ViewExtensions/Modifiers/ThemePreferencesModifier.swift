@@ -24,7 +24,7 @@ struct ThemePreferencesModifier: ViewModifier {
 
 private struct StoredThemePreferencesModifier: ViewModifier {
 
-    #if os(iOS)
+    #if !os(tvOS)
     @Default(.appAppearance)
     private var appAppearance
     @Default(.selectUserUseSplashscreen)
@@ -40,7 +40,7 @@ private struct StoredThemePreferencesModifier: ViewModifier {
 
     init(userID: String?) {
         self.userID = userID
-        #if os(iOS)
+        #if !os(tvOS)
         _userAppearance = Default(.userAppearance(userID: userID ?? "default"))
         #endif
         _userAccentColor = Default(.userAccentColor(userID: userID ?? "default"))
@@ -61,9 +61,18 @@ private struct StoredThemePreferencesModifier: ViewModifier {
     @ContentBuilder
     func body(content: Content) -> some View {
         content
+            #if os(macOS)
+            .tint(theme.accentColor)
+            // Sheets and alerts are separate windows that only inherit from the
+            // application, and every window shares the one user session.
+            .onChange(of: theme.appearance, initial: true) {
+                NSApp.appearance = theme.appearance.nsAppearance
+            }
+            #else
             .background {
                 ThemeWindowBridge()
             }
+            #endif
             .environment(\.theme, theme)
             .transformEnvironment(\.colorScheme) { colorScheme in
                 switch theme.appearance {
@@ -78,6 +87,7 @@ private struct StoredThemePreferencesModifier: ViewModifier {
     }
 }
 
+#if !os(macOS)
 private struct ThemeWindowBridge: UIViewRepresentable {
 
     @AppTheme
@@ -120,3 +130,4 @@ private struct ThemeWindowBridge: UIViewRepresentable {
         }
     }
 }
+#endif

@@ -53,7 +53,7 @@ struct EPGView: View {
                 await viewModel.refresh(startDate: nil)
             }
         }
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .topBarTrailing {
             EPGDateMenu(viewModel: viewModel)
         }
