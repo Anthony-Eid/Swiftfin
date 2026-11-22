@@ -11,19 +11,24 @@ import KeychainSwift
 import Security
 
 /// Stores secrets in the data protection keychain when the app is signed
-/// with a team, and in a private file in the app's container otherwise.
+/// with a team, and in the login keychain otherwise.
 ///
-/// The default file-based macOS keychain ties an item's access to the
-/// code signature that created it. An ad-hoc signed build has a new
-/// signature on every build, so every launch would block on a system
-/// password prompt. The data protection keychain has no such prompt but
-/// requires an application identifier entitlement that ad-hoc signing
-/// cannot provide.
+/// The login keychain ties an item's access to the code signature that
+/// created it. An ad-hoc signed build has a new signature on every build,
+/// so the system asks for the login password once after each rebuild. The
+/// data protection keychain has no such prompt but requires an application
+/// identifier entitlement that ad-hoc signing cannot provide.
+///
+/// Automated runs cannot answer that prompt, so launching with
+/// `-storesCredentialsInFile YES` keeps secrets in an unencrypted file in
+/// the app's container instead. That is for testing only.
 final class MacKeychain: KeychainSwift {
 
     private let lock = NSLock()
 
     private let service = Bundle.main.bundleIdentifier ?? "org.jellyfin.swiftfin"
+
+    private let storesCredentialsInFile = UserDefaults.standard.bool(forKey: "storesCredentialsInFile")
 
     /// Reading can report "not found" without the entitlement, so only
     /// a successful write shows that the keychain is usable.
@@ -62,6 +67,10 @@ final class MacKeychain: KeychainSwift {
     ) -> Bool {
         lock.withLock {
             guard usesDataProtectionKeychain else {
+                guard storesCredentialsInFile else {
+                    return super.set(value, forKey: key, withAccess: access)
+                }
+
                 var contents = fileContents
                 contents[key] = value
                 return write(contents)
@@ -81,6 +90,10 @@ final class MacKeychain: KeychainSwift {
     override func getData(_ key: String, asReference: Bool = false) -> Data? {
         lock.withLock {
             guard usesDataProtectionKeychain else {
+                guard storesCredentialsInFile else {
+                    return super.getData(key, asReference: asReference)
+                }
+
                 return fileContents[key]
             }
 
@@ -99,6 +112,10 @@ final class MacKeychain: KeychainSwift {
     override func delete(_ key: String) -> Bool {
         lock.withLock {
             guard usesDataProtectionKeychain else {
+                guard storesCredentialsInFile else {
+                    return super.delete(key)
+                }
+
                 var contents = fileContents
                 contents[key] = nil
                 return write(contents)
@@ -113,6 +130,10 @@ final class MacKeychain: KeychainSwift {
     override func clear() -> Bool {
         lock.withLock {
             guard usesDataProtectionKeychain else {
+                guard storesCredentialsInFile else {
+                    return super.clear()
+                }
+
                 return write([:])
             }
 

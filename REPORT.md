@@ -51,10 +51,11 @@ windows, Quick Connect, and the Release configuration.
 - **Deployment target macOS 26**, because main uses APIs that are only available there.
 - **Own bundle identifier** (`org.jellyfin.swiftfin.macos-fork`), so the build does not share a
   sandbox container with an installed iOS-on-Mac Swiftfin.
-- **Credentials.** An ad-hoc signed build cannot use the data protection keychain, and the
-  file-based keychain prompts for the login password after every rebuild. `MacKeychain` uses the
-  data protection keychain when it is available (team-signed builds) and otherwise a private
-  file in the app's sandbox container. That file is not encrypted.
+- **Credentials.** An ad-hoc signed build cannot use the data protection keychain. `MacKeychain`
+  uses it when it is available (team-signed builds) and otherwise the login keychain, which asks
+  for the login password once after every rebuild. Launching with `-storesCredentialsInFile YES`
+  keeps tokens in an unencrypted file in the app's container instead; that exists only so
+  automated test runs are not blocked by the prompt.
 
 ## Known gaps on macOS
 
