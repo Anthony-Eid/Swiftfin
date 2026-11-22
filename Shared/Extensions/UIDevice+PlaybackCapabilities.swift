@@ -7,7 +7,11 @@
 //
 
 import AVFoundation
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 import VideoToolbox
 
 extension UIDevice {

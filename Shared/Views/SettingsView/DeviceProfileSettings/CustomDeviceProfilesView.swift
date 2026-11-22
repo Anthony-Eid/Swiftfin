@@ -46,7 +46,7 @@ struct CustomDeviceProfilesView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "doc.on.doc") { behaviorView
+        Form(systemImage: "doc.on.doc") { behaviorView
             customProfileView
             defaultProfileView
         }

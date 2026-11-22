@@ -11,7 +11,11 @@ import FactoryKit
 import Foundation
 import JellyfinAPI
 import KeychainSwift
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 extension SwiftfinStore.State {
 

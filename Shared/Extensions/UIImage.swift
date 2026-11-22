@@ -59,6 +59,10 @@ extension UIImage {
               let tile = cgImage.cropping(to: rect)
         else { return nil }
 
+        #if os(macOS)
+        return UIImage(cgImage: tile, size: tileSize)
+        #else
         return UIImage(cgImage: tile, scale: scale, orientation: imageOrientation)
+        #endif
     }
 }

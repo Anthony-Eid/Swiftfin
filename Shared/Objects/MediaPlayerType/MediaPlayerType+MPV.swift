@@ -8,7 +8,11 @@
 
 import Foundation
 import JellyfinAPI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 /// - Note: Values reflect the FFmpeg decoders and demuxers enabled in the MPVUI Libmpv build
 ///   (`Build/Sources/MPVBuildCore/Recipes/FFmpegFlags.swift`), which is not a full FFmpeg build.

@@ -59,10 +59,14 @@ struct PosterButton<Item: Poster>: View {
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay { overlay.posterStyle(displayType) }
+        #if !os(macOS)
         .contentShape(.contextMenuPreview, Rectangle())
+        #endif
         .matchedTransitionSource(id: "item", in: namespace)
         .subtleShadow()
+        #if !os(macOS)
         .hoverEffect(.highlight)
+        #endif
     }
 
     @ContentBuilder

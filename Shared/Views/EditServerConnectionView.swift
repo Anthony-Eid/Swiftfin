@@ -177,7 +177,7 @@ struct EditServerConnectionView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "network") { Section {
+        Form(systemImage: "network") { Section {
             TextField(L10n.name, text: $draft.name)
                 .focused($isNameFocused)
         } header: {

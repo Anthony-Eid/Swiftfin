@@ -37,7 +37,7 @@ struct PlaybackQualitySettingsView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "play.rectangle.on.rectangle") {
+        Form(systemImage: "play.rectangle.on.rectangle") {
             Section(L10n.quality) {
                 PlatformPicker(
                     L10n.resolution,

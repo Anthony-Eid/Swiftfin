@@ -11,7 +11,11 @@ import Combine
 import FactoryKit
 import Foundation
 import JellyfinAPI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 extension Container {
 

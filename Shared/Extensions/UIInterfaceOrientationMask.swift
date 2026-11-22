@@ -6,8 +6,12 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
+#if canImport(UIKit)
 import UIKit
-#if os(tvOS)
+#else
+import AppKit
+#endif
+#if os(tvOS) || os(macOS)
 import SwiftfinMacros
 #endif
 
@@ -40,7 +44,7 @@ extension UIInterfaceOrientationMask {
     }
 }
 
-#if os(tvOS)
+#if os(tvOS) || os(macOS)
 @OptionSet<Int>
 struct UIInterfaceOrientationMask: CustomDebugStringConvertible {
 

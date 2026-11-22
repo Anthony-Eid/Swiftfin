@@ -40,7 +40,7 @@ struct FilterView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: type.systemImage) { ForEach(type.group) { element in
+        Form(systemImage: type.systemImage) { ForEach(type.group) { element in
             Section {
                 selector(group: element)
             } header: {

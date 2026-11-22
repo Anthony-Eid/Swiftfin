@@ -6,24 +6,52 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 extension UIDevice {
 
     static var vendorUUIDString: String {
+        #if os(macOS)
+        // AppKit has no vendor identifier, so persist one per install
+        let key = "deviceIdentifier"
+        if let identifier = UserDefaults.standard.string(forKey: key), !identifier.isEmpty {
+            return identifier
+        }
+
+        let identifier = UUID().uuidString
+        UserDefaults.standard.set(identifier, forKey: key)
+        return identifier
+        #else
         current.identifierForVendor!.uuidString
+        #endif
     }
 
     static var isPad: Bool {
+        #if os(macOS)
+        false
+        #else
         current.userInterfaceIdiom == .pad
+        #endif
     }
 
     static var isPhone: Bool {
+        #if os(macOS)
+        false
+        #else
         current.userInterfaceIdiom == .phone
+        #endif
     }
 
     static var isTV: Bool {
+        #if os(macOS)
+        false
+        #else
         current.userInterfaceIdiom == .tv
+        #endif
     }
 
     static let supportsLiquidGlass: Bool = {
@@ -49,6 +77,8 @@ extension UIDevice {
     static var platform: String {
         #if os(tvOS)
         L10n.tvOS
+        #elseif os(macOS)
+        "macOS"
         #else
         if UIDevice.isPad {
             L10n.iPadOS
@@ -100,5 +130,45 @@ enum UIImpactFeedbackGenerator {
         case medium
         case heavy
     }
+}
+#endif
+
+#if os(macOS)
+/// The Mac has no vendor identifier or haptics; this stands in for
+/// the parts of `UIDevice` that the shared layer reads.
+final class UIDevice {
+
+    static let current = UIDevice()
+
+    let name: String = Host.current().localizedName ?? "Mac"
+}
+
+enum UINotificationFeedbackGenerator {
+
+    enum FeedbackType {
+
+        case success
+        case warning
+        case error
+    }
+}
+
+/// - Important: Does nothing on macOS.
+final class UIImpactFeedbackGenerator {
+
+    enum FeedbackStyle {
+
+        case light
+        case medium
+        case heavy
+        case soft
+        case rigid
+    }
+
+    init(style: FeedbackStyle) {}
+
+    func prepare() {}
+    func impactOccurred() {}
+    func impactOccurred(intensity: CGFloat) {}
 }
 #endif

@@ -9,7 +9,11 @@
 import AVFoundation
 import Foundation
 import MediaPlayer
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 struct NowPlayableStaticMetadata: Equatable {
 

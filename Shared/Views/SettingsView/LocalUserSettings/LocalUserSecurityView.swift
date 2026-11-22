@@ -71,7 +71,7 @@ struct LocalUserSecurityView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "lock.fill") { securitySection
+        Form(systemImage: "lock.fill") { securitySection
 
             if signInPolicy == .requirePin {
                 Section {

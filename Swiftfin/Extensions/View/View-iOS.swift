@@ -7,17 +7,21 @@
 //
 
 import Defaults
+#if !os(macOS)
 import Mantis
+#endif
 import SwiftUI
 @_spi(Advanced) import SwiftUIIntrospect
 
 extension View {
 
+    #if os(iOS)
     /// - Important: This does nothing on iOS.
     @ContentBuilder
     func focusSection() -> some View {
         self
     }
+    #endif
 
     @ContentBuilder
     func navigationBarFilterDrawer(
@@ -63,6 +67,9 @@ extension View {
 
     @ContentBuilder
     func listRowCornerRadius(_ radius: CGFloat) -> some View {
+        #if os(macOS)
+        self
+        #else
         introspect(.listCell, on: .iOS(.v18...)) { cell in
             if #available(iOS 26, *) {
                 cell.cornerConfiguration = .uniformCorners(radius: .fixed(radius))
@@ -70,8 +77,10 @@ extension View {
                 cell.layer.cornerRadius = radius
             }
         }
+        #endif
     }
 
+    #if !os(macOS)
     /// Photo Picker with cropping after selection
     @ContentBuilder
     func photoPicker(
@@ -91,4 +100,5 @@ extension View {
             )
         )
     }
+    #endif
 }

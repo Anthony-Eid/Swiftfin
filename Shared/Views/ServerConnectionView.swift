@@ -74,7 +74,7 @@ struct ServerConnectionView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "network") {
+        Form(systemImage: "network") {
             if isAutoSwitchFeatureEnabled {
                 Section {
                     Toggle(L10n.autoSwitch, isOn: $viewModel.isAutoSwitchEnabled)

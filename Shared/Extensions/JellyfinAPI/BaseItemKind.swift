@@ -431,6 +431,7 @@ extension BaseItemKind {
         [.boxSet, .movie, .person, .series]
     }
 
+    #if !os(macOS)
     /// Which `AVAudioSession.Mode` should be used for this type.
     var audioMode: AVAudioSession.Mode {
         switch self {
@@ -440,4 +441,5 @@ extension BaseItemKind {
             .default
         }
     }
+    #endif
 }

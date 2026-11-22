@@ -16,7 +16,7 @@ struct IndicatorSettingsView: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: "checkmark.circle.fill") { Section(L10n.posters) {
+        Form(systemImage: "checkmark.circle.fill") { Section(L10n.posters) {
             Toggle(L10n.showWatched, isOn: $posterConfiguration.indicators.contains(.played))
 
             Toggle(L10n.showFavorited, isOn: $posterConfiguration.indicators.contains(.favorited))

@@ -7,7 +7,11 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 /// `TabView` has an "overscroll" bug on some index selections, workaround with manual `UIPageViewController`
 struct SupplementTabView<Content: View>: PlatformViewControllerRepresentable {

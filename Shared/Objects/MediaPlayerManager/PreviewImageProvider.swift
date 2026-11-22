@@ -7,7 +7,11 @@
 //
 
 import JellyfinAPI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 @MainActor
 final class PreviewImageProvider {

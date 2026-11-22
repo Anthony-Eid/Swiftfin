@@ -11,7 +11,11 @@ import Defaults
 import Foundation
 import Logging
 import MediaPlayer
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 @MainActor
 final class NowPlayableObserver: MediaSessionObserver {

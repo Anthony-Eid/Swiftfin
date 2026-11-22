@@ -42,7 +42,7 @@ extension CustomizeSettingsView {
 
         @ContentBuilder
         var body: some View {
-            SwiftfinForm(systemImage: "gear") {
+            Form(systemImage: "gear") {
                 Section {
                     PlatformPicker(L10n.style, selection: $itemViewType)
                 } header: {

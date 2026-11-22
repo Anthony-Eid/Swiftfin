@@ -9,7 +9,11 @@
 import Foundation
 import ObjectiveC.runtime
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 struct NotchMeasurement: Equatable, Sendable {
 

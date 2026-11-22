@@ -11,9 +11,17 @@ import SwiftUI
 /// An empty view for hit testing
 struct EmptyHitTestView: PlatformViewRepresentable {
 
+    #if os(macOS)
+    func makeNSView(context: Context) -> NSView {
+        NSView()
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
+    #else
     func makeUIView(context: Context) -> UIView {
         UIView()
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {}
+    #endif
 }

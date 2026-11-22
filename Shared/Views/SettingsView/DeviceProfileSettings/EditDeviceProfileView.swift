@@ -99,7 +99,7 @@ extension CustomDeviceProfilesView {
 
         @ContentBuilder
         private var contentView: some View {
-            SwiftfinForm(systemImage: "doc") { Section(L10n.behavior) {
+            Form(systemImage: "doc") { Section(L10n.behavior) {
                 Toggle(L10n.useAsTranscodingProfile, isOn: $profile.useAsTranscodingProfile)
             }
 

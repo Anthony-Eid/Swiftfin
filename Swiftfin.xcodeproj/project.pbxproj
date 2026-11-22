@@ -123,6 +123,33 @@
 		E1DC9814296DC06200982F06 /* PulseLogHandler in Frameworks */ = {isa = PBXBuildFile; productRef = E1DC9813296DC06200982F06 /* PulseLogHandler */; };
 		E1E2D7BF2E3FD936004E2E5F /* Transmission in Frameworks */ = {isa = PBXBuildFile; productRef = E1E2D7BE2E3FD936004E2E5F /* Transmission */; };
 		E1FADDF12E84B63600FB310E /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E1FADDF02E84B63600FB310E /* StatefulMacros */; };
+		F1A000000000000000000020 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = E1002B672793CFBA00E47059 /* Algorithms */; };
+		F1A000000000000000000021 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = E19011170000000000000003 /* AsyncAlgorithms */; };
+		F1A000000000000000000022 /* BlurHashKit in Frameworks */ = {isa = PBXBuildFile; productRef = E13AF3BB28A0C59E009093AB /* BlurHashKit */; };
+		F1A000000000000000000023 /* CollectionHStack in Frameworks */ = {isa = PBXBuildFile; productRef = E113A2A62B5A178D009CAAAA /* CollectionHStack */; };
+		F1A000000000000000000024 /* CollectionVGrid in Frameworks */ = {isa = PBXBuildFile; productRef = E113A2A92B5A179A009CAAAA /* CollectionVGrid */; };
+		F1A000000000000000000025 /* CoreStore in Frameworks */ = {isa = PBXBuildFile; productRef = E13DD3C52716499E009D4DAF /* CoreStore */; };
+		F1A000000000000000000026 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = E12186DD2718F1C50010884C /* Defaults */; };
+		F1A000000000000000000027 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = E1BE3EBB2FE8DEA100327990 /* FactoryKit */; };
+		F1A000000000000000000028 /* Files in Frameworks */ = {isa = PBXBuildFile; productRef = E1575E3B293C6B15001665B1 /* Files */; };
+		F1A000000000000000000029 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = E1155ACA2D0584A90021557A /* IdentifiedCollections */; };
+		F1A00000000000000000002A /* JellyfinAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E1BD95B12FBE8E44001CDA57 /* JellyfinAPI */; };
+		F1A00000000000000000002B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E145EB4A2BE16849003BF6F3 /* KeychainSwift */; };
+		F1A00000000000000000002C /* MPVUI in Frameworks */ = {isa = PBXBuildFile; productRef = E19005010000000000000003 /* MPVUI */; };
+		F1A00000000000000000002D /* MediaAccessibilityKit in Frameworks */ = {isa = PBXBuildFile; productRef = E17E76BA30A0F24400DE148E /* MediaAccessibilityKit */; };
+		F1A00000000000000000002E /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = E13AF3B528A0C598009093AB /* Nuke */; };
+		F1A00000000000000000002F /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = E13AF3B728A0C598009093AB /* NukeExtensions */; };
+		F1A000000000000000000030 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = E13AF3B928A0C598009093AB /* NukeUI */; };
+		F1A000000000000000000031 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = E19DDEC62948EF9900954E10 /* OrderedCollections */; };
+		F1A000000000000000000032 /* PerceptionCore in Frameworks */ = {isa = PBXBuildFile; productRef = E19011170000000000000005 /* PerceptionCore */; };
+		F1A000000000000000000033 /* Pulse in Frameworks */ = {isa = PBXBuildFile; productRef = E107060F2942F57D00646DAF /* Pulse */; };
+		F1A000000000000000000034 /* PulseLogHandler in Frameworks */ = {isa = PBXBuildFile; productRef = E10706112942F57D00646DAF /* PulseLogHandler */; };
+		F1A000000000000000000035 /* PulseUI in Frameworks */ = {isa = PBXBuildFile; productRef = E10706132942F57D00646DAF /* PulseUI */; };
+		F1A000000000000000000036 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = E1153DCF2BBB634F00424D36 /* SVGKit */; };
+		F1A000000000000000000037 /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E1079FD92FC6FFCE004B5C54 /* StatefulMacros */; };
+		F1A000000000000000000038 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = E1392FEC2BA218A80034110D /* SwiftUIIntrospect */; };
+		F1A000000000000000000039 /* SwiftfinMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E19009260000000000000003 /* SwiftfinMacros */; };
+		F1A00000000000000000003A /* Transmission in Frameworks */ = {isa = PBXBuildFile; productRef = E164308B2E3AA9710028D4E8 /* Transmission */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -198,6 +225,7 @@
 		966A9427F8964C70A70997AB /* Profiles.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Profiles.json; sourceTree = "<group>"; };
 		BF8A69DD4C0747F69061EC37 /* Swiftfin iOS Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftfin iOS Screenshots.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2CF090E1C194AED9C84DEBA /* Swiftfin tvOS Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swiftfin tvOS Screenshots.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1A000000000000000000002 /* Swiftfin macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftfin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -269,6 +297,39 @@
 			);
 			target = 5358705F2669D21600D05A09 /* Swiftfin tvOS */;
 		};
+		F1A00000000000000000000A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+				Resources/Swiftfin.entitlements,
+			);
+			target = F1A000000000000000000003 /* Swiftfin macOS */;
+		};
+		F1A00000000000000000000B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DevelopmentTeam.xcconfig,
+				Shared.xcconfig,
+			);
+			target = F1A000000000000000000003 /* Swiftfin macOS */;
+		};
+		F1A00000000000000000000C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/SwiftfinApp.swift,
+				Resources/Info.plist,
+				Resources/Swiftfin.entitlements,
+				App/SwiftfinSpotlight.swift,
+				Extensions/View/Modifiers/PhotoPickerModifier.swift,
+				Views/PhotoCropView/PhotoCropAspectRatios.swift,
+				Views/PhotoCropView/PhotoCropView.swift,
+				Objects/Chromecast/ChromecastController.swift,
+				Components/GestureView.swift,
+				Components/UnmaskSecureField.swift,
+				Components/NotchReader.swift,
+			);
+			target = F1A000000000000000000003 /* Swiftfin macOS */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -277,11 +338,12 @@
 		51949983A343481190C9A370 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		60CEF4B387DC4AC28A90EA68 /* Frames */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Frames; sourceTree = "<group>"; };
 		8FED35935A4B40F4AF02F229 /* Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Tests; sourceTree = "<group>"; };
-		E14560852DFCAE51008FF700 /* Swiftfin */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E14561A22DFCAE51008FF700 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Swiftfin; sourceTree = "<group>"; };
+		E14560852DFCAE51008FF700 /* Swiftfin */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E14561A22DFCAE51008FF700 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, F1A00000000000000000000C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Swiftfin; sourceTree = "<group>"; };
 		E14563272DFCAE6E008FF700 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E14565D92DFCAE6E008FF700 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 3002B5F683E649EFBCF37FED /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 24EBA6499E0C420F8E5B2D33 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
 		E145669F2DFCAEFD008FF700 /* Swiftfin tvOS */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E14567272DFCAEFD008FF700 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Swiftfin tvOS"; sourceTree = "<group>"; };
 		E1456FC82DFCB323008FF700 /* Translations */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Translations; sourceTree = "<group>"; };
-		E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E1BE3EDA2FE9DAE800327990 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, E1BE3EDB2FE9DAE800327990 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = XcodeConfig; sourceTree = "<group>"; };
+		E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (E1BE3EDA2FE9DAE800327990 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, E1BE3EDB2FE9DAE800327990 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, F1A00000000000000000000B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = XcodeConfig; sourceTree = "<group>"; };
+		F1A000000000000000000001 /* Swiftfin macOS */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (F1A00000000000000000000A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Swiftfin macOS"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -429,6 +491,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F1A000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1A000000000000000000020 /* Algorithms in Frameworks */,
+				F1A000000000000000000021 /* AsyncAlgorithms in Frameworks */,
+				F1A000000000000000000022 /* BlurHashKit in Frameworks */,
+				F1A000000000000000000023 /* CollectionHStack in Frameworks */,
+				F1A000000000000000000024 /* CollectionVGrid in Frameworks */,
+				F1A000000000000000000025 /* CoreStore in Frameworks */,
+				F1A000000000000000000026 /* Defaults in Frameworks */,
+				F1A000000000000000000027 /* FactoryKit in Frameworks */,
+				F1A000000000000000000028 /* Files in Frameworks */,
+				F1A000000000000000000029 /* IdentifiedCollections in Frameworks */,
+				F1A00000000000000000002A /* JellyfinAPI in Frameworks */,
+				F1A00000000000000000002B /* KeychainSwift in Frameworks */,
+				F1A00000000000000000002C /* MPVUI in Frameworks */,
+				F1A00000000000000000002D /* MediaAccessibilityKit in Frameworks */,
+				F1A00000000000000000002E /* Nuke in Frameworks */,
+				F1A00000000000000000002F /* NukeExtensions in Frameworks */,
+				F1A000000000000000000030 /* NukeUI in Frameworks */,
+				F1A000000000000000000031 /* OrderedCollections in Frameworks */,
+				F1A000000000000000000032 /* PerceptionCore in Frameworks */,
+				F1A000000000000000000033 /* Pulse in Frameworks */,
+				F1A000000000000000000034 /* PulseLogHandler in Frameworks */,
+				F1A000000000000000000035 /* PulseUI in Frameworks */,
+				F1A000000000000000000036 /* SVGKit in Frameworks */,
+				F1A000000000000000000037 /* StatefulMacros in Frameworks */,
+				F1A000000000000000000038 /* SwiftUIIntrospect in Frameworks */,
+				F1A000000000000000000039 /* SwiftfinMacros in Frameworks */,
+				F1A00000000000000000003A /* Transmission in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -436,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				E14560852DFCAE51008FF700 /* Swiftfin */,
+				F1A000000000000000000001 /* Swiftfin macOS */,
 				E145669F2DFCAEFD008FF700 /* Swiftfin tvOS */,
 				E14563272DFCAE6E008FF700 /* Shared */,
 				E1456FC82DFCB323008FF700 /* Translations */,
@@ -450,6 +547,7 @@
 			isa = PBXGroup;
 			children = (
 				5377CBF1263B596A003A4E83 /* Swiftfin.app */,
+				F1A000000000000000000002 /* Swiftfin macOS.app */,
 				535870602669D21600D05A09 /* Swiftfin.app */,
 				BF8A69DD4C0747F69061EC37 /* Swiftfin iOS Screenshots.xctest */,
 				F2CF090E1C194AED9C84DEBA /* Swiftfin tvOS Screenshots.xctest */,
@@ -726,6 +824,60 @@
 			productReference = BF8A69DD4C0747F69061EC37 /* Swiftfin iOS Screenshots.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		F1A000000000000000000003 /* Swiftfin macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1A000000000000000000009 /* Build configuration list for PBXNativeTarget "Swiftfin macOS" */;
+			buildPhases = (
+				F1A000000000000000000004 /* Sources */,
+				F1A000000000000000000005 /* Frameworks */,
+				F1A000000000000000000006 /* Resources */,
+				F1A00000000000000000000D /* Write Git Branch */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F1A000000000000000000001 /* Swiftfin macOS */,
+				E14560852DFCAE51008FF700 /* Swiftfin */,
+				E14563272DFCAE6E008FF700 /* Shared */,
+				E1456FC82DFCB323008FF700 /* Translations */,
+				E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */,
+			);
+			name = "Swiftfin macOS";
+			packageProductDependencies = (
+				E1002B672793CFBA00E47059 /* Algorithms */,
+				E19011170000000000000003 /* AsyncAlgorithms */,
+				E13AF3BB28A0C59E009093AB /* BlurHashKit */,
+				E113A2A62B5A178D009CAAAA /* CollectionHStack */,
+				E113A2A92B5A179A009CAAAA /* CollectionVGrid */,
+				E13DD3C52716499E009D4DAF /* CoreStore */,
+				E12186DD2718F1C50010884C /* Defaults */,
+				E1BE3EBB2FE8DEA100327990 /* FactoryKit */,
+				E1575E3B293C6B15001665B1 /* Files */,
+				E1155ACA2D0584A90021557A /* IdentifiedCollections */,
+				E1BD95B12FBE8E44001CDA57 /* JellyfinAPI */,
+				E145EB4A2BE16849003BF6F3 /* KeychainSwift */,
+				E19005010000000000000003 /* MPVUI */,
+				E17E76BA30A0F24400DE148E /* MediaAccessibilityKit */,
+				E13AF3B528A0C598009093AB /* Nuke */,
+				E13AF3B728A0C598009093AB /* NukeExtensions */,
+				E13AF3B928A0C598009093AB /* NukeUI */,
+				E19DDEC62948EF9900954E10 /* OrderedCollections */,
+				E19011170000000000000005 /* PerceptionCore */,
+				E107060F2942F57D00646DAF /* Pulse */,
+				E10706112942F57D00646DAF /* PulseLogHandler */,
+				E10706132942F57D00646DAF /* PulseUI */,
+				E1153DCF2BBB634F00424D36 /* SVGKit */,
+				E1079FD92FC6FFCE004B5C54 /* StatefulMacros */,
+				E1392FEC2BA218A80034110D /* SwiftUIIntrospect */,
+				E19009260000000000000003 /* SwiftfinMacros */,
+				E164308B2E3AA9710028D4E8 /* Transmission */,
+			);
+			productName = "Swiftfin macOS";
+			productReference = F1A000000000000000000002 /* Swiftfin macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -739,6 +891,9 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
+					F1A000000000000000000003 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					0558DEDC63B5442F9F6D7D72 = {
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = 5358705F2669D21600D05A09;
@@ -856,6 +1011,7 @@
 			projectRoot = "";
 			targets = (
 				5377CBF0263B596A003A4E83 /* Swiftfin iOS */,
+				F1A000000000000000000003 /* Swiftfin macOS */,
 				5358705F2669D21600D05A09 /* Swiftfin tvOS */,
 				6E22078F6D5C4A179202982B /* Swiftfin iOS Screenshots */,
 				0558DEDC63B5442F9F6D7D72 /* Swiftfin tvOS Screenshots */,
@@ -886,6 +1042,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA089795C6024CAABFA3F5D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1A000000000000000000006 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1047,6 +1210,23 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\"\n\nif command -v swiftlint >/dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed. Run 'brew bundle --file Brewfile' from the repository root.\"\nfi\n";
 		};
+		F1A00000000000000000000D /* Write Git Branch */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Tools/WriteGitBranch.sh",
+			);
+			name = "Write Git Branch";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GitBranch.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"${SRCROOT}/Tools/WriteGitBranch.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1072,6 +1252,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		80256475C72144CFB335414E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F1A000000000000000000004 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1437,6 +1624,79 @@
 			};
 			name = Debug;
 		};
+		F1A000000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */;
+			baseConfigurationReferenceRelativePath = Shared.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = "Swiftfin macOS/Resources/Swiftfin.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Swiftfin macOS/Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Swiftfin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = Swiftfin;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+			};
+			name = Debug;
+		};
+		F1A000000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */;
+			baseConfigurationReferenceRelativePath = Shared.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = "Swiftfin macOS/Resources/Swiftfin.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Swiftfin macOS/Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Swiftfin;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = Swiftfin;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1481,6 +1741,15 @@
 			buildConfigurations = (
 				A2525D94DF2C452889218492 /* Debug */,
 				8B15529463764FCD87973DFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1A000000000000000000009 /* Build configuration list for PBXNativeTarget "Swiftfin macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1A000000000000000000007 /* Debug */,
+				F1A000000000000000000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

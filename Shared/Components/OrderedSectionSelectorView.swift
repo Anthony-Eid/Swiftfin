@@ -99,7 +99,7 @@ struct OrderedSectionSelectorView<Element: Displayable & Hashable>: View {
 
     @ContentBuilder
     var body: some View {
-        SwiftfinForm(systemImage: systemImage) {
+        Form(systemImage: systemImage) {
             Section(L10n.enabled) {
                 if selection.value.isEmpty {
                     Text(L10n.none)

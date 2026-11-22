@@ -131,31 +131,6 @@ extension ToolbarItemPlacement {
     }
 }
 
-final class UIDevice {
-
-    static let current = UIDevice()
-
-    let name: String = Host.current().localizedName ?? "Mac"
-}
-
-enum UINotificationFeedbackGenerator {
-    enum FeedbackType {
-        case error
-        case success
-        case warning
-    }
-}
-
-enum UIImpactFeedbackGenerator {
-    enum FeedbackStyle {
-        case light
-        case medium
-        case heavy
-        case soft
-        case rigid
-    }
-}
-
 final class UIApplication {
 
     static let shared = UIApplication()
