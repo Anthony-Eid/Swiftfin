@@ -361,6 +361,12 @@ final class UserSessionManager: ObservableObject {
             }
 
         newSession?.didStart()
+
+        #if !os(tvOS)
+        if let newSession {
+            Container.shared.downloadManager().userSessionDidStart(newSession)
+        }
+        #endif
     }
 
     private func resolveStoredSession() throws -> UserSession? {

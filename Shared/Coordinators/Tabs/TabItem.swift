@@ -67,6 +67,18 @@ extension TabItem {
         }
     }
 
+    #if os(iOS) || os(macOS)
+    static var downloads: TabItem {
+        TabItem(
+            id: "downloads",
+            title: L10n.downloads,
+            systemImage: "arrow.down.circle"
+        ) {
+            DownloadsView()
+        }
+    }
+    #endif
+
     static func item(id: String, displayTitle: String) -> TabItem {
         let item = BaseItemDto(id: id, name: displayTitle)
         let provider = ItemContentGroupProvider(item: item)

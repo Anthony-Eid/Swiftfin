@@ -26,6 +26,11 @@ struct PosterIndicatorsOverlay: View {
     @ViewContextContains(.isInResume)
     private var isInResume
 
+    #if os(iOS) || os(macOS)
+    @ObservedObject
+    private var downloadedItems = DownloadedItems.shared
+    #endif
+
     @SharedBaseItem
     var item: BaseItemDto
     let posterDisplayType: PosterDisplayType
@@ -64,8 +69,24 @@ struct PosterIndicatorsOverlay: View {
             (item.userData?.playbackPositionTicks ?? 0) == 0
     }
 
+    private var showsDownloadedIndicator: Bool {
+        #if os(iOS) || os(macOS)
+        indicators.contains(.downloaded) && downloadedItems.contains(item.id)
+        #else
+        false
+        #endif
+    }
+
     @ArrayBuilder<QuadrantItem>
     private var bottomIndicators: [QuadrantItem] {
+        if showsDownloadedIndicator {
+            QuadrantItem(color: .green) {
+                Text(Image(systemName: "arrow.down"))
+                    .fontWeight(.bold)
+                    .accessibilityLabel("Downloaded")
+            }
+        }
+
         if item.isRecording {
             QuadrantItem(color: .red) {
                 Text(Image(systemName: "record.circle"))

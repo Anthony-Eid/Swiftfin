@@ -37,6 +37,7 @@ struct DownloadRecord: Codable, Hashable, Identifiable {
     /// The full item, including media sources, media streams and user data
     var item: BaseItemDto
     var mediaSourceID: String?
+    var quality: DownloadQuality = .original
 
     /// Parents of an episode, for grouping while offline
     var series: BaseItemDto?
@@ -61,9 +62,49 @@ struct DownloadRecord: Codable, Hashable, Identifiable {
     /// Whether `localPlaybackPositionTicks` still has to be sent to the server
     var needsProgressSync: Bool
 
+    /// Whether `item` and its parents were fetched in full for this record
+    var hasFullMetadata: Bool = false
+
     var progress: Double {
+        guard state != .completed else { return 1 }
         guard bytesExpected > 0 else { return 0 }
-        return min(1, Double(bytesReceived) / Double(bytesExpected))
+        // The size of a transcode is an estimate until it finishes
+        return min(quality.isOriginal ? 1 : 0.99, Double(bytesReceived) / Double(bytesExpected))
+    }
+
+    /// A transcode is produced on demand and cannot be continued from a byte offset
+    var supportsPause: Bool {
+        quality.isOriginal
+    }
+}
+
+extension DownloadRecord {
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.init(
+            id: try container.decode(String.self, forKey: .id),
+            serverID: try container.decode(String.self, forKey: .serverID),
+            userID: try container.decode(String.self, forKey: .userID),
+            item: try container.decode(BaseItemDto.self, forKey: .item),
+            mediaSourceID: try container.decodeIfPresent(String.self, forKey: .mediaSourceID),
+            quality: try container.decodeIfPresent(DownloadQuality.self, forKey: .quality) ?? .original,
+            series: try container.decodeIfPresent(BaseItemDto.self, forKey: .series),
+            season: try container.decodeIfPresent(BaseItemDto.self, forKey: .season),
+            state: try container.decode(State.self, forKey: .state),
+            errorMessage: try container.decodeIfPresent(String.self, forKey: .errorMessage),
+            bytesReceived: try container.decode(Int64.self, forKey: .bytesReceived),
+            bytesExpected: try container.decode(Int64.self, forKey: .bytesExpected),
+            mediaFileName: try container.decodeIfPresent(String.self, forKey: .mediaFileName),
+            imageFileNames: try container.decodeIfPresent([Image: String].self, forKey: .imageFileNames) ?? [:],
+            dateCreated: try container.decode(Date.self, forKey: .dateCreated),
+            dateCompleted: try container.decodeIfPresent(Date.self, forKey: .dateCompleted),
+            localPlaybackPositionTicks: try container.decodeIfPresent(Int.self, forKey: .localPlaybackPositionTicks),
+            localPlaybackDate: try container.decodeIfPresent(Date.self, forKey: .localPlaybackDate),
+            needsProgressSync: try container.decodeIfPresent(Bool.self, forKey: .needsProgressSync) ?? false,
+            hasFullMetadata: try container.decodeIfPresent(Bool.self, forKey: .hasFullMetadata) ?? false
+        )
     }
 }
 

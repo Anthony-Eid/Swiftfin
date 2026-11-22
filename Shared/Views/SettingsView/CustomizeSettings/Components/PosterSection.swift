@@ -144,6 +144,10 @@ extension CustomizeSettingsView {
 
                     Toggle(L10n.played, isOn: $posterConfiguration.indicators.contains(.played))
 
+                    #if os(iOS) || os(macOS)
+                    Toggle("Downloaded", isOn: $posterConfiguration.indicators.contains(.downloaded))
+                    #endif
+
                     PlatformPicker(
                         L10n.unplayed,
                         selection: Binding {

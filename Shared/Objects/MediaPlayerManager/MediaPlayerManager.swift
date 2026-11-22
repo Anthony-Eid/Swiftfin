@@ -54,7 +54,16 @@ final class MediaPlayerManager {
 
     init(
         nowPlayableObserver: any MediaSessionObserver? = nil,
-        resolveItem: @escaping MediaSession.ItemResolver = { try await MediaPlayerItemResolver.resolve($0, for: $1, userSession: $2) }
+        resolveItem: @escaping MediaSession.ItemResolver = { intent, profile, userSession in
+            #if !os(tvOS)
+            // A finished download plays from disk, with or without the server
+            if let item = try DownloadedMediaPlayerItemResolver.resolve(intent, for: profile, userSession: userSession) {
+                return item
+            }
+            #endif
+
+            return try await MediaPlayerItemResolver.resolve(intent, for: profile, userSession: userSession)
+        }
     ) {
         self.nowPlayableObserver = nowPlayableObserver ?? NowPlayableObserver()
         self.resolveItem = resolveItem

@@ -181,6 +181,9 @@ struct ItemView: View {
 
             Button(L10n.cancel, role: .cancel) {}
         }
+        #if os(iOS) || os(macOS)
+        .downloadRemovalConfirmation(provider: provider)
+        #endif
         .onChange(of: provider.$item.value == nil) { _, isUnavailable in
             if isUnavailable {
                 router.dismiss()

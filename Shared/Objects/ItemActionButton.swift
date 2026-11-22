@@ -21,6 +21,7 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
     case delete
     #if os(iOS) || os(macOS)
     case editMetadata
+    case download
     #endif
 
     var displayTitle: String {
@@ -46,6 +47,8 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
         #if os(iOS) || os(macOS)
         case .editMetadata:
             L10n.edit
+        case .download:
+            L10n.download
         #endif
         }
     }
@@ -77,6 +80,8 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
         #if os(iOS) || os(macOS)
         case .editMetadata:
             "pencil"
+        case .download:
+            "arrow.down.circle"
         #endif
         }
     }
@@ -100,19 +105,32 @@ enum ItemActionButton: String, CaseIterable, Displayable, Equatable, Identifiabl
             .pink
         case .record:
             .red
+        #if os(iOS) || os(macOS)
+        case .download:
+            .green
+        #endif
         default:
             nil
         }
     }
 
-    static let defaultBarActionButtons: [ItemActionButton] = [
-        .played,
-        .favorited,
-        .shuffle,
-        .record,
-        .trailers,
-        .playback
-    ]
+    static let defaultBarActionButtons: [ItemActionButton] = {
+        var buttons: [ItemActionButton] = [
+            .played,
+            .favorited,
+            .shuffle,
+            .record,
+            .trailers,
+            .playback
+        ]
+
+        // Early enough to stay within `ItemActionButtons.maximumButtons`
+        #if os(iOS) || os(macOS)
+        buttons.insert(.download, at: 2)
+        #endif
+
+        return buttons
+    }()
 
     static let defaultMenuActionButtons: [ItemActionButton] = [
         .refresh,

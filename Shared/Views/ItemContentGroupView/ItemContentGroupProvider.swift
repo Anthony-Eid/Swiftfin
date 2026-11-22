@@ -24,6 +24,8 @@ final class ItemContentGroupProvider: ViewModel, ContentGroupProvider {
     @Published
     var isPresentingDeleteConfirmation = false
     @Published
+    var isPresentingDownloadRemovalConfirmation = false
+    @Published
     private(set) var playbackIntent: PlaybackIntent?
 
     let id: String

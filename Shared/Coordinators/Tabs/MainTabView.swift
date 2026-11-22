@@ -36,6 +36,7 @@ struct MainTabView: View {
             TabItem.contentGroup(provider: DefaultContentGroupProvider())
             TabItem.search
             TabItem.media
+            TabItem.downloads
         }
         #else
         TabCoordinator {
@@ -55,6 +56,9 @@ struct MainTabView: View {
 
             TabItem.search
             TabItem.media
+            #if os(macOS)
+            TabItem.downloads
+            #endif
             TabItem.settings
         }
         #endif

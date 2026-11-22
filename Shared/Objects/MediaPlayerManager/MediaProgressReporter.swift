@@ -8,6 +8,7 @@
 
 import Combine
 import Defaults
+import FactoryKit
 import Foundation
 import Get
 import JellyfinAPI
@@ -65,6 +66,16 @@ final class MediaProgressReporter {
         info.sessionID = item.playSessionID
 
         enqueue(Paths.reportPlaybackStopped(info))
+
+        #if !os(tvOS)
+        if recordLocalPlayback(of: item, positionTicks: info.positionTicks) {
+            let userSession = userSession
+
+            Task {
+                await Container.shared.downloadManager().syncPlaybackProgress(userSession: userSession)
+            }
+        }
+        #endif
     }
 
     private func report(isStart: Bool = false) {
@@ -83,7 +94,24 @@ final class MediaProgressReporter {
 
         let report = PlaybackStateReport(info: info, secondarySubtitleStreamIndex: item.selectedSecondarySubtitleStreamIndex ?? -1)
         enqueue(report.request(isStart: isStart), isProgress: !isStart)
+
+        #if !os(tvOS)
+        if !isStart {
+            recordLocalPlayback(of: item, positionTicks: info.positionTicks)
+        }
+        #endif
     }
+
+    #if !os(tvOS)
+    /// A downloaded item keeps its position on the device, as the server may be unreachable.
+    @discardableResult
+    private func recordLocalPlayback(of item: MediaPlayerItem, positionTicks: Int?) -> Bool {
+        guard item.url.isFileURL, let itemID = item.baseItem.id, let positionTicks else { return false }
+
+        Container.shared.downloadManager().recordPlayback(itemID: itemID, positionTicks: positionTicks)
+        return true
+    }
+    #endif
 
     /// Releases an opened live stream when resolution is discarded before playback starts.
     static func discard(_ item: MediaPlayerItem, session: UserSession?) async {

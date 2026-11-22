@@ -8,6 +8,7 @@
 
 import Combine
 import Defaults
+import FactoryKit
 import Foundation
 import JellyfinAPI
 
@@ -165,7 +166,22 @@ final class EpisodeMediaPlayerQueue: MediaPlayerQueue {
         )
 
         let request = Paths.getEpisodes(seriesID: seriesID, parameters: parameters)
-        let response = try await session.send(request)
+        let items: [BaseItemDto]?
+
+        do {
+            items = try await session.send(request).value.items
+        } catch {
+            #if !os(tvOS)
+            // Without the server, a downloaded episode continues with the downloaded ones
+            guard !Task.isCancelled, let adjacent = Container.shared.downloadManager().adjacentDownloadedEpisodes(of: item) else {
+                throw error
+            }
+
+            items = [adjacent.previous, item, adjacent.next].compactMap { $0 }
+            #else
+            throw error
+            #endif
+        }
 
         // 4 possible states:
         //  1 - only current episode
@@ -174,7 +190,7 @@ final class EpisodeMediaPlayerQueue: MediaPlayerQueue {
         //  4 - three episodes with current in middle
 
         // 1
-        guard let items = response.value.items, items.count > 1 else { return }
+        guard let items, items.count > 1 else { return }
 
         var previousItem: BaseItemDto?
         var nextItem: BaseItemDto?

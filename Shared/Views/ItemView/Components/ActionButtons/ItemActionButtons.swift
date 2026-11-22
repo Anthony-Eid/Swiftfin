@@ -115,6 +115,8 @@ struct ItemActionButtons: View {
         #if os(iOS) || os(macOS)
         case .editMetadata:
             provider.item.canEditMetadata
+        case .download:
+            DownloadManager.canDownload(provider.item) || DownloadManager.canDownloadChildren(of: provider.item)
         #endif
         }
     }
@@ -174,6 +176,8 @@ struct ItemActionButtons: View {
             #if os(iOS) || os(macOS)
             case .editMetadata:
                 Edit()
+            case .download:
+                Download()
             #endif
             }
         }
