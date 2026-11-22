@@ -36,7 +36,11 @@ struct Router: DynamicProperty {
     struct Wrapper {
 
         let router: NavigationCoordinator.Router
+        #if os(macOS)
+        let dismiss: DismissRouteAction
+        #else
         let dismiss: DismissAction
+        #endif
 
         var isRootOfPath: Bool {
             router.isRootOfPath
@@ -89,10 +93,20 @@ struct Router: DynamicProperty {
             return wrapper
         }
 
+        #if os(macOS)
+        let value = Wrapper(
+            router: environment.router,
+            dismiss: .init(
+                dismiss: environment.dismiss,
+                dismissPresentation: environment.router.isRootOfPath ? environment.dismissPresentation : nil
+            )
+        )
+        #else
         let value = Wrapper(
             router: environment.router,
             dismiss: environment.dismiss
         )
+        #endif
         wrapperBox.value = value
         return value
     }
@@ -106,3 +120,30 @@ extension EnvironmentValues {
         isRootOfPath: false
     )
 }
+
+#if os(macOS)
+
+/// On macOS, `DismissAction` at the root of a `NavigationStack`
+/// does not close the sheet that hosts the stack, so the root
+/// of a presented stack closes its presentation directly.
+@MainActor
+struct DismissRouteAction {
+
+    let dismiss: DismissAction
+    let dismissPresentation: (() -> Void)?
+
+    func callAsFunction() {
+        if let dismissPresentation {
+            dismissPresentation()
+        } else {
+            dismiss()
+        }
+    }
+}
+
+extension EnvironmentValues {
+
+    @Entry
+    var dismissPresentation: (() -> Void)? = nil
+}
+#endif

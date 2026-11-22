@@ -103,7 +103,13 @@ extension ItemView {
                     #endif
                 }
                 .trackingFrame(for: .scrollView)
+                #if os(macOS)
+                // The sidebar's inset is not in the navigation stack's tracked safe area,
+                // so the content cannot extend under it and be padded back
+                .ignoresSafeArea(.container, edges: viewLayout.value(standard: [], large: isEnhanced ? .vertical : .top))
+                #else
                 .ignoresSafeArea(.container, edges: viewLayout.value(standard: [], large: isEnhanced ? .all : [.horizontal, .top]))
+                #endif
                 .scrollIndicators(.hidden)
             }
         }

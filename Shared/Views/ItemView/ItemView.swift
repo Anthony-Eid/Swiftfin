@@ -117,6 +117,11 @@ struct ItemView: View {
         let (_, overflow, menu) = buttonConfiguration.resolvedButtons(for: provider)
 
         GeometryReader { proxy in
+            #if os(macOS)
+            // The sidebar insets the content of the navigation stack rather than
+            // the stack, so the content stays within its own safe area instead
+            let horizontalInsets = EdgeInsets.zero
+            #else
             let safeArea = frameForParentView[.navigationStack]?.safeAreaInsets ?? proxy.safeAreaInsets
             let horizontalInsets = EdgeInsets(
                 top: 0,
@@ -124,6 +129,7 @@ struct ItemView: View {
                 bottom: 0,
                 trailing: viewLayout.isLarge ? 0 : safeArea.trailing
             )
+            #endif
 
             ZStack {
                 switch viewModel.state {
@@ -147,7 +153,9 @@ struct ItemView: View {
                 value: horizontalInsets
             )
         }
+        #if !os(macOS)
         .ignoresSafeArea(.container, edges: viewLayout.isLarge ? [] : .horizontal)
+        #endif
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.linear(duration: 0.2), value: viewModel.state)
         .animation(.linear(duration: 0.2), value: viewModel.background.states)

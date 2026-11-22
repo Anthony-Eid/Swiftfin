@@ -87,6 +87,9 @@ private struct PlatformForm<Image: View, Content: View>: PresentationView {
         Form {
             content
         }
+        #if os(macOS)
+        .formStyle(.grouped)
+        #endif
         .toolbarTitleDisplayMode(.inline)
     }
 
@@ -99,6 +102,9 @@ private struct PlatformForm<Image: View, Content: View>: PresentationView {
             Form {
                 content
             }
+            #if os(macOS)
+            .formStyle(.grouped)
+            #endif
             .scrollClipDisabled()
             .toggleStyle(PrimaryToggleStyle())
             .mask(extendedBy: .init(vertical: 20, horizontal: 100)) {

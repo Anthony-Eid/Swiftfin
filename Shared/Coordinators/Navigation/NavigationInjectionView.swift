@@ -101,6 +101,7 @@ struct NavigationInjectionView: View {
                     .destination
                     .removingViewContext(.isTabRoot)
             }
+            .environment(\.dismissPresentation) { coordinator.presentedSheet = nil }
             // A sheet is its own window, which takes the size of its content
             .frame(minWidth: 520, idealWidth: 640, minHeight: 440, idealHeight: 640)
         }
