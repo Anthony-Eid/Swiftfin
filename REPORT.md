@@ -72,3 +72,32 @@ windows, Quick Connect, and the Release configuration.
 1. Exercise the unverified areas above and fix what breaks.
 2. Milestone 2: download manager with Codable metadata in Application Support (not CoreStore).
 3. Milestone 3: menu bar commands, window restoration.
+
+## Offline downloads (milestone 2)
+
+Code is in `Shared/Services/Downloads/` (engine, storage, offline resolver, progress sync) and
+`Shared/Views/DownloadsView/` plus the Download action button and poster badge.
+
+Verified by running the app, with downloads queued through a temporary launch hook because the
+screen was locked:
+
+- Original-quality download of "Caminandes: Llama Drama" from the demo server: 35,103,580 bytes
+  on disk, equal to the server's file size, with `record.json`, poster and backdrop. No token in
+  the record.
+- 2 Mbps download of "Caminandes: Gran Dillama" (126 MB original): a 29 MB MPEG transport stream
+  with valid packet framing from start to end.
+- The background `URLSession` works in the sandboxed ad-hoc build.
+
+Not verified, because it needs the screen: every part of the UI (Download button and quality
+menu, Downloads screen, poster badge), offline playback of the local files, resume position, and
+progress sync back to the server. The sync endpoint itself was checked with `curl`.
+
+Limits:
+
+- The demo account has downloading disabled, so the files come from the static stream endpoint.
+  `/Items/{id}/Download` is used when the user's policy allows it; that path is untested.
+- Reduced-quality downloads cannot pause or resume, and their progress is an estimate.
+- A paused download restarts from zero after the app is relaunched.
+- Subtitle sidecar files are not downloaded; embedded tracks in an original file are kept.
+- AVPlayer cannot play the `.ts` files; the default MPV player is expected to.
+- iOS shares the code but could not be built with Xcode 27.0 for the upstream reason above.
