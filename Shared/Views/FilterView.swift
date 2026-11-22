@@ -40,16 +40,15 @@ struct FilterView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(systemImage: type.systemImage) {
-            ForEach(type.group) { element in
-                Section {
-                    selector(group: element)
-                } header: {
-                    if type.group.count > 1 {
-                        Text(element.displayTitle)
-                    }
+        SwiftfinForm(systemImage: type.systemImage) { ForEach(type.group) { element in
+            Section {
+                selector(group: element)
+            } header: {
+                if type.group.count > 1 {
+                    Text(element.displayTitle)
                 }
             }
+        }
         }
         .navigationTitle(type.displayTitle)
         .toolbarTitleDisplayMode(.inline)

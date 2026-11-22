@@ -103,11 +103,15 @@ struct BackportGlassEffectModifier<BackgroundShape: Shape>: ViewModifier {
 
     @ContentBuilder
     private func platformAppearanceBody(_ content: some View) -> some View {
+        #if os(macOS)
+        legacyBody(content)
+        #else
         if #available(iOS 26.0, *), UIDevice.supportsLiquidGlass {
             glassBody(content)
         } else {
             legacyBody(content)
         }
+        #endif
     }
 
     private var resolvedTint: Color? {
@@ -181,6 +185,7 @@ struct BackportGlassEffectModifier<BackgroundShape: Shape>: ViewModifier {
         }
     }
 
+    #if !os(macOS)
     @available(iOS 26.0, tvOS 26.0, *)
     @ContentBuilder
     private func glassBody(_ content: some View) -> some View {
@@ -197,4 +202,5 @@ struct BackportGlassEffectModifier<BackgroundShape: Shape>: ViewModifier {
                 .glassEffect(.identity, in: shape)
         }
     }
+    #endif
 }

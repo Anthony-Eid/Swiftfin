@@ -46,8 +46,7 @@ struct CustomDeviceProfilesView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(systemImage: "doc.on.doc") {
-            behaviorView
+        SwiftfinForm(systemImage: "doc.on.doc") { behaviorView
             customProfileView
             defaultProfileView
         }
@@ -55,11 +54,11 @@ struct CustomDeviceProfilesView: View {
         .topBarTrailing {
             if customProfiles.isNotEmpty {
                 addButton
-                    #if os(iOS)
-                        .backport
-                        .buttonStyle(.glassProminent)
-                        .controlSize(.small)
-                    #endif
+                #if os(iOS)
+                .backport
+                .buttonStyle(.glassProminent)
+                .controlSize(.small)
+                #endif
             }
         }
     }
@@ -67,7 +66,7 @@ struct CustomDeviceProfilesView: View {
     @ContentBuilder
     private var behaviorView: some View {
         Section(L10n.behavior) {
-            #if os(iOS)
+            #if os(iOS) || os(macOS)
             Picker(L10n.behavior, selection: $customDeviceProfileAction)
             #else
             ListRowMenu(L10n.behavior, selection: $customDeviceProfileAction)
@@ -110,10 +109,10 @@ struct CustomDeviceProfilesView: View {
                 }
                 #if os(iOS)
                 .swipeActions {
-                        deleteButton(profile: profile)
-                    }
+                    deleteButton(profile: profile)
+                }
                 #else
-                    .contextMenu {
+                .contextMenu {
                         deleteButton(profile: profile)
                     }
                 #endif
@@ -135,6 +134,11 @@ struct CustomDeviceProfilesView: View {
                         )
                     }
                     .foregroundStyle(.primary, .secondary)
+                    #if os(macOS)
+                        // These rows are display-only; the default mac button
+                        // border would box each multi-line profile
+                            .buttonStyle(.plain)
+                    #endif
                 }
 
                 ForEach(Array(mediaPlayerType.transcodingProfiles.filter { $0.type == .video }.enumerated()), id: \.offset) { _, profile in
@@ -147,6 +151,9 @@ struct CustomDeviceProfilesView: View {
                         )
                     }
                     .foregroundStyle(.primary, .secondary)
+                    #if os(macOS)
+                        .buttonStyle(.plain)
+                    #endif
                 }
             }
         }

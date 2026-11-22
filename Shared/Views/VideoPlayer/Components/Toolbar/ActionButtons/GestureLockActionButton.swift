@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+#if os(iOS)
+
 extension VideoPlayer.PlaybackControls.Toolbar.ActionButtons {
 
     struct GestureLock: View {
@@ -26,3 +28,5 @@ extension VideoPlayer.PlaybackControls.Toolbar.ActionButtons {
         }
     }
 }
+
+#endif

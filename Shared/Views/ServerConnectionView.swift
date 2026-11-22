@@ -20,12 +20,17 @@ struct ServerConnectionView: View {
     @Router
     private var router
 
+    #if os(iOS)
     @State
     private var editMode: EditMode = .inactive
 
     private var isEditing: Bool {
         editMode.isEditing
     }
+    #else
+    @State
+    private var isEditing = false
+    #endif
 
     @ContentBuilder
     private func serverConnectionRow(_ connection: ServerConnection) -> some View {
@@ -69,7 +74,7 @@ struct ServerConnectionView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(systemImage: "network") {
+        SwiftfinForm(systemImage: "network") {
             if isAutoSwitchFeatureEnabled {
                 Section {
                     Toggle(L10n.autoSwitch, isOn: $viewModel.isAutoSwitchEnabled)
@@ -114,7 +119,9 @@ struct ServerConnectionView: View {
                 .disabled(isEditing)
             }
         }
+        #if os(iOS)
         .environment(\.editMode, $editMode)
+        #endif
         .animation(.linear(duration: 0.1), value: isEditing)
         .animation(.linear(duration: 0.1), value: viewModel.connections)
         .animation(.linear(duration: 0.1), value: viewModel.isAutoSwitchEnabled)
@@ -122,12 +129,16 @@ struct ServerConnectionView: View {
         .topBarTrailing {
             if viewModel.connections.count > 1 {
                 Button(isEditing ? L10n.done : L10n.edit) {
+                    #if os(iOS)
                     editMode = isEditing ? .inactive : .active
+                    #else
+                    isEditing.toggle()
+                    #endif
                 }
                 #if os(iOS)
                 .backport
-                    .buttonStyle(.glass)
-                    .controlSize(.small)
+                .buttonStyle(.glass)
+                .controlSize(.small)
                 #endif
             }
         }

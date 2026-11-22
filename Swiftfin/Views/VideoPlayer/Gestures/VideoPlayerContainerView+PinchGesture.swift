@@ -6,6 +6,7 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
+#if !os(macOS)
 import Defaults
 import SwiftUI
 
@@ -92,3 +93,4 @@ extension VideoPlayer.UIContainerViewController {
         }
     }
 }
+#endif

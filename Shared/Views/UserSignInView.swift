@@ -6,7 +6,9 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
+#if !os(macOS)
 import CollectionVGrid
+#endif
 import Defaults
 import FactoryKit
 import JellyfinAPI
@@ -126,7 +128,9 @@ struct UserSignInView: View {
                 .disabled(user != nil)
                 .autocorrectionDisabled()
                 .textContentType(.username)
+            #if !os(macOS)
                 .textInputAutocapitalization(.never)
+            #endif
                 .focused($focusedTextField, equals: .username)
                 .onSubmit {
                     focusedTextField = .password
@@ -146,8 +150,10 @@ struct UserSignInView: View {
             }
             .autocorrectionDisabled()
             .textContentType(.password)
-            .textInputAutocapitalization(.never)
-            .focused($focusedTextField, equals: .password)
+            #if !os(macOS)
+                .textInputAutocapitalization(.never)
+            #endif
+                .focused($focusedTextField, equals: .password)
         } header: {
             Text(L10n.signInToServer(viewModel.server.name))
         } footer: {
@@ -178,7 +184,7 @@ struct UserSignInView: View {
             .backport
             .buttonStyle(.glassProminent.shadow(false))
             #if os(iOS)
-            .controlSize(.large)
+                .controlSize(.large)
             #endif
             #if os(iOS)
             .listRowSeparator(.hidden)
@@ -201,11 +207,11 @@ struct UserSignInView: View {
             .buttonStyle(.glassProminent.shadow(false))
             .tint(.jellyfinPurple)
             #if os(iOS)
-            .controlSize(.large)
-            .listRowSeparator(.hidden)
+                .controlSize(.large)
+                .listRowSeparator(.hidden)
             #endif
-            .frame(maxHeight: 75)
-            .disabled(username.isEmpty)
+                .frame(maxHeight: 75)
+                .disabled(username.isEmpty)
         }
 
         if user == nil, viewModel.isQuickConnectEnabled {
@@ -229,7 +235,7 @@ struct UserSignInView: View {
                 .buttonStyle(.glassProminent.shadow(false))
                 .tint(.jellyfinPurple)
                 #if os(iOS)
-                .controlSize(.large)
+                    .controlSize(.large)
                 #endif
                 #if os(iOS)
                 .listRowSeparator(.hidden)

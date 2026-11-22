@@ -43,10 +43,10 @@ final class UserSignInViewModel: ObservableObject {
     enum Action {
 
         case cancel
-        case error
-        case getPublicData
+        case error(Error)
         case signIn(username: String, password: String)
         case signInQuickConnect(secret: String)
+        case getPublicData
 
         case save(
             user: UserStateDataPair,

@@ -38,6 +38,12 @@ struct NavigationBarFilterDrawerModifier: ViewModifier {
         if types.isEmpty {
             content
         } else {
+            #if os(macOS)
+            content
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    drawer
+                }
+            #else
             if #available(iOS 26, *) {
                 content
                     .safeAreaBar(edge: .top, spacing: 0) {
@@ -52,6 +58,7 @@ struct NavigationBarFilterDrawerModifier: ViewModifier {
                 }
                 .ignoresSafeArea()
             }
+            #endif
         }
     }
 }

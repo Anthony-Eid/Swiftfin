@@ -9,7 +9,11 @@
 import FactoryKit
 import Foundation
 import JellyfinAPI
+#if canImport(UIKit)
 import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 @MainActor
 extension BaseItemDto {
@@ -37,7 +41,11 @@ extension BaseItemDto {
         else { return nil }
 
         // TODO: put into environment?
+        #if os(macOS)
+        let scale = NSScreen.main?.backingScaleFactor ?? 1
+        #else
         let scale = UITraitCollection.current.displayScale
+        #endif
 
         let parameters = Paths.GetItemImageParameters(
             maxWidth: environment.maxWidth.map { Int($0 * scale) },
