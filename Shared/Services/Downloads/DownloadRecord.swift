@@ -65,6 +65,9 @@ struct DownloadRecord: Codable, Hashable, Identifiable {
     /// Whether `item` and its parents were fetched in full for this record
     var hasFullMetadata: Bool = false
 
+    /// Text subtitles stored as separate files, by the index of their media stream
+    var subtitleFileNames: [Int: String] = [:]
+
     var progress: Double {
         guard state != .completed else { return 1 }
         guard bytesExpected > 0 else { return 0 }
@@ -103,7 +106,8 @@ extension DownloadRecord {
             localPlaybackPositionTicks: try container.decodeIfPresent(Int.self, forKey: .localPlaybackPositionTicks),
             localPlaybackDate: try container.decodeIfPresent(Date.self, forKey: .localPlaybackDate),
             needsProgressSync: try container.decodeIfPresent(Bool.self, forKey: .needsProgressSync) ?? false,
-            hasFullMetadata: try container.decodeIfPresent(Bool.self, forKey: .hasFullMetadata) ?? false
+            hasFullMetadata: try container.decodeIfPresent(Bool.self, forKey: .hasFullMetadata) ?? false,
+            subtitleFileNames: try container.decodeIfPresent([Int: String].self, forKey: .subtitleFileNames) ?? [:]
         )
     }
 }

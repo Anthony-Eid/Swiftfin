@@ -38,7 +38,8 @@ final class DownloadManager: ObservableObject {
     private var transfer: DownloadTransferSession!
     private var tasks: [String: URLSessionDownloadTask] = [:]
     private var preparations: [String: Task<Void, Never>] = [:]
-    private var resumeData: [String: Data] = [:]
+    /// Failed downloads to try again when the network is back
+    private var networkFailures = Set<String>()
     private var endpoints: [String: DownloadRequestBuilder.Endpoint] = [:]
     private var parents: [String: BaseItemDto] = [:]
     private var hasReconciledTasks = false
@@ -213,7 +214,7 @@ final class DownloadManager: ObservableObject {
                 Task { @MainActor [weak self] in
                     guard let self, let data, self.record(for: itemID)?.state == .paused else { return }
 
-                    resumeData[itemID] = data
+                    storage.saveResumeData(data, for: itemID)
                 }
             }
         }
@@ -238,7 +239,7 @@ final class DownloadManager: ObservableObject {
 
         preparations.removeValue(forKey: itemID)?.cancel()
         tasks.removeValue(forKey: itemID)?.cancel()
-        resumeData[itemID] = nil
+        networkFailures.remove(itemID)
 
         if case let .transcode(playSessionID) = endpoints.removeValue(forKey: itemID),
            let userSession = currentSession(for: record) {
@@ -273,11 +274,33 @@ final class DownloadManager: ObservableObject {
     private func connectivityMayHaveChanged() {
         guard let userSession = Container.shared.currentUserSession() else { return }
 
+        let retries = networkFailures
+        networkFailures.removeAll()
+
+        for itemID in retries {
+            resume(itemID)
+        }
+
         startQueued(userSession: userSession)
 
         Task {
             await syncPlaybackProgress(userSession: userSession)
         }
+    }
+
+    private static func isNetworkFailure(_ error: Error) -> Bool {
+        let codes: [URLError.Code] = [
+            .notConnectedToInternet,
+            .networkConnectionLost,
+            .timedOut,
+            .cannotConnectToHost,
+            .cannotFindHost,
+            .dnsLookupFailed,
+            .internationalRoamingOff,
+            .dataNotAllowed,
+        ]
+
+        return (error as? URLError).map { codes.contains($0.code) } ?? false
     }
 
     private func currentSession(for record: DownloadRecord) -> UserSession? {
@@ -358,6 +381,10 @@ final class DownloadManager: ObservableObject {
             } catch {
                 guard !Task.isCancelled, let self, record(for: itemID)?.state == .downloading else { return }
 
+                if DownloadManager.isNetworkFailure(error) {
+                    networkFailures.insert(itemID)
+                }
+
                 fail(itemID, message: error.localizedDescription)
             }
         }
@@ -424,6 +451,14 @@ final class DownloadManager: ObservableObject {
                 await self?.downloadImages(for: itemID, userSession: userSession)
             }
         }
+
+        if let record = self.record(for: itemID),
+           record.subtitleFileNames.isEmpty,
+           DownloadRequestBuilder.sidecarSubtitles(of: record).isNotEmpty {
+            Task { [weak self] in
+                await self?.downloadSubtitles(for: itemID, userSession: userSession)
+            }
+        }
     }
 
     private func parent(_ id: String?, userSession: UserSession) async throws -> BaseItemDto? {
@@ -467,12 +502,35 @@ final class DownloadManager: ObservableObject {
         }
     }
 
+    private func downloadSubtitles(for itemID: String, userSession: UserSession) async {
+        guard let record = record(for: itemID) else { return }
+
+        let storage = storage
+
+        for stream in DownloadRequestBuilder.sidecarSubtitles(of: record) {
+            guard let index = stream.index,
+                  let request = DownloadRequestBuilder.subtitleRequest(for: stream, record: record, userSession: userSession),
+                  let (data, response) = try? await URLSession.shared.data(for: request),
+                  let response = response as? HTTPURLResponse,
+                  (200 ..< 300).contains(response.statusCode),
+                  data.isNotEmpty else { continue }
+
+            let name = "subtitle-\(index).\(DownloadRequestBuilder.subtitleFormat(for: stream))"
+
+            // The download may have been deleted while the subtitle loaded
+            guard self.record(for: itemID) != nil,
+                  (try? data.write(to: storage.file(name, for: itemID), options: .atomic)) != nil else { continue }
+
+            update(itemID) { $0.subtitleFileNames[index] = name }
+        }
+    }
+
     private func startTransfer(_ itemID: String, userSession: UserSession) throws {
         guard let record = record(for: itemID), record.state == .downloading else { throw CancellationError() }
 
         let task: URLSessionDownloadTask
 
-        if let data = resumeData.removeValue(forKey: itemID) {
+        if let data = storage.takeResumeData(for: itemID) {
             task = transfer.session.downloadTask(withResumeData: data)
         } else {
             let endpoint: DownloadRequestBuilder.Endpoint = if !record.quality.isOriginal {
@@ -655,7 +713,11 @@ final class DownloadManager: ObservableObject {
         }
 
         if record.supportsPause {
-            resumeData[itemID] = data
+            storage.saveResumeData(data, for: itemID)
+        }
+
+        if Self.isNetworkFailure(error) {
+            networkFailures.insert(itemID)
         }
 
         fail(itemID, message: error.localizedDescription)

@@ -49,13 +49,26 @@ enum DownloadedMediaPlayerItemResolver {
 
         try Task.checkCancellation()
 
-        // Sidecar files are not downloaded, only the tracks inside the file exist
+        // Only the tracks inside the file and the subtitle files stored with it exist
         mediaSource.mediaStreams = mediaSource.mediaStreams?
-            .filter { $0.isExternal != true }
-            .map { stream in
+            .compactMap { stream -> MediaStream? in
                 var stream = stream
-                stream.deliveryURL = nil
-                stream.deliveryMethod = stream.type == .subtitle ? .embed : nil
+
+                guard stream.isExternal == true else {
+                    stream.deliveryURL = nil
+                    stream.deliveryMethod = stream.type == .subtitle ? .embed : nil
+                    return stream
+                }
+
+                guard stream.type == .subtitle,
+                      let index = stream.index,
+                      let name = record.subtitleFileNames[index] else { return nil }
+
+                let file = downloadManager.storage.file(name, for: record.id)
+                guard FileManager.default.fileExists(atPath: file.path) else { return nil }
+
+                stream.deliveryMethod = .external
+                stream.deliveryURL = file.absoluteString
                 return stream
             }
         mediaSource.transcodingURL = nil

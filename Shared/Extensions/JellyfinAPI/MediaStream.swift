@@ -24,6 +24,11 @@ extension MediaStream {
     func url(with client: JellyfinClient) -> URL? {
         guard let deliveryURL else { return nil }
 
+        // A downloaded subtitle is a local file
+        if deliveryURL.hasPrefix("file://") {
+            return URL(string: deliveryURL)
+        }
+
         let deliveryPath = deliveryURL.removingFirst(if: client.configuration.url.absoluteString.last == "/")
 
         return client.url(path: deliveryPath)

@@ -16,6 +16,7 @@ struct DownloadStorage: Sendable {
 
     static let recordFileName = "record.json"
     static let incomingFileName = "incoming.download"
+    static let resumeDataFileName = "resume.data"
 
     let root: URL
 
@@ -69,6 +70,26 @@ struct DownloadStorage: Sendable {
 
         let data = try JSONEncoder().encode(record)
         try data.write(to: directory.appendingPathComponent(Self.recordFileName), options: .atomic)
+    }
+
+    /// Kept on disk so that a paused or interrupted download continues after a relaunch
+    func saveResumeData(_ data: Data?, for itemID: String) {
+        let file = file(Self.resumeDataFileName, for: itemID)
+
+        if let data {
+            try? data.write(to: file, options: .atomic)
+        } else {
+            try? FileManager.default.removeItem(at: file)
+        }
+    }
+
+    /// Resume data is only valid once
+    func takeResumeData(for itemID: String) -> Data? {
+        let file = file(Self.resumeDataFileName, for: itemID)
+        let data = try? Data(contentsOf: file)
+        try? FileManager.default.removeItem(at: file)
+
+        return data
     }
 
     func remove(_ itemID: String) {

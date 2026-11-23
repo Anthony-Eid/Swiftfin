@@ -182,7 +182,44 @@ enum DownloadRequestBuilder {
         return "mp4"
     }
 
-    /// Describes the file a transcode produces: one video and one audio stream, no subtitles
+    // MARK: - Subtitles
+
+    /// The text subtitles that are not inside the downloaded file
+    static func sidecarSubtitles(of record: DownloadRecord) -> [MediaStream] {
+        (mediaSource(of: record)?.mediaStreams ?? []).filter {
+            $0.type == .subtitle && $0.isExternal == true && $0.isTextSubtitleStream == true && ($0.index ?? -1) >= 0
+        }
+    }
+
+    /// The server converts any text subtitle to these, and the players read them from a file
+    static func subtitleFormat(for stream: MediaStream) -> String {
+        switch stream.codec?.lowercased() {
+        case "ass":
+            "ass"
+        case "ssa":
+            "ssa"
+        default:
+            "srt"
+        }
+    }
+
+    static func subtitleRequest(
+        for stream: MediaStream,
+        record: DownloadRecord,
+        userSession: UserSession
+    ) -> URLRequest? {
+        guard let index = stream.index else { return nil }
+
+        let sourceID = record.mediaSourceID ?? record.id
+
+        return request(
+            path: "Videos/\(record.id)/\(sourceID)/Subtitles/\(index)/0/Stream.\(subtitleFormat(for: stream))",
+            userSession: userSession
+        )
+    }
+
+    /// Describes the file a transcode produces: one video and one audio stream.
+    /// Its text subtitles become separate files, image subtitles are lost.
     static func transcodedSource(from source: MediaSourceInfo, quality: DownloadQuality) -> MediaSourceInfo {
         guard let target = TranscodeTarget(quality: quality) else { return source }
 
@@ -227,6 +264,11 @@ enum DownloadRequestBuilder {
                 .joined(separator: " - ")
             source.defaultAudioStreamIndex = audio.index
             kept.append(audio)
+        }
+
+        for var subtitle in streams where subtitle.type == .subtitle && subtitle.isTextSubtitleStream == true {
+            subtitle.isExternal = true
+            kept.append(subtitle)
         }
 
         source.mediaStreams = kept
