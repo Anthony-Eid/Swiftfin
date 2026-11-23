@@ -17,6 +17,8 @@ picture-in-picture, multiple windows, the Release configuration.
 | --- | --- |
 | `DownloadRecord` JSON files and media under Application Support (no CoreStore) | Files on disk after a download |
 | Background `URLSession` queue with progress, pause, resume, cancel, delete | Download a short demo item in the app |
+| Download quality: original or a bitrate transcoded by the server | 2 Mbps download of a demo film (done, file not yet played) |
+| Text subtitles as files next to the media | Needs a server with subtitles; the demo has none |
 | Original file from `/Items/{id}/Download`, static stream when the policy forbids it | The demo user has downloading disabled, so the fallback is the path tested |
 | Offline metadata and artwork | Downloads screen renders with the network blocked |
 | Offline playback with resume position | Play the local file with the network blocked |
@@ -30,7 +32,7 @@ Risks:
 - A background session may not work in a sandboxed, ad-hoc signed app. The session configuration is a single switch.
 - The app may not reach the signed-in screens when the server is unreachable at launch.
 - The demo server cannot test the real download endpoint.
-- Transcoded downloads at a chosen bitrate are not planned for this pass.
+- Resume data, network retry, subtitle files and the free-space check were written without a compiler and have not been built.
 
 ## Milestone 3: Mac polish (not started)
 

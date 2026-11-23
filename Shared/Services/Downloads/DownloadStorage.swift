@@ -101,6 +101,14 @@ struct DownloadStorage: Sendable {
         return size?.int64Value ?? 0
     }
 
+    /// Free space on the volume of the downloads, `nil` when it cannot be read
+    func availableCapacity() -> Int64? {
+        let applicationSupport = root.deletingLastPathComponent().deletingLastPathComponent()
+        let values = try? applicationSupport.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+
+        return values?.volumeAvailableCapacityForImportantUsage
+    }
+
     /// Downloaded media can be fetched again, so keep it out of device backups
     func excludeFromBackup(_ url: URL) {
         var url = url

@@ -97,7 +97,41 @@ Limits:
 - The demo account has downloading disabled, so the files come from the static stream endpoint.
   `/Items/{id}/Download` is used when the user's policy allows it; that path is untested.
 - Reduced-quality downloads cannot pause or resume, and their progress is an estimate.
-- A paused download restarts from zero after the app is relaunched.
-- Subtitle sidecar files are not downloaded; embedded tracks in an original file are kept.
+- Image subtitles (PGS, VobSub) are lost in a reduced-quality download.
 - AVPlayer cannot play the `.ts` files; the default MPV player is expected to.
 - iOS shares the code but could not be built with Xcode 27.0 for the upstream reason above.
+
+### Added without a compiler (not built, not run)
+
+These were written on a Linux machine with no Xcode. They pass a syntax check only, so the first
+macOS build may need small fixes. They are in two commits that can be reverted on their own.
+
+- **Resume after relaunch.** Resume data is written to `resume.data` in the item's folder, so a
+  paused or interrupted original-quality download continues instead of restarting.
+- **Retry after network loss.** A download that failed on a network error is queued again when
+  the network returns or the app comes to the foreground.
+- **Subtitles.** External text subtitles are downloaded as `subtitle-<index>.<srt|ass|ssa>` next
+  to the media. A reduced-quality download fetches all of its text subtitles that way, since the
+  transcoded file carries none. The offline player offers them as sidecar tracks. The demo server
+  has no item with subtitles, so the endpoint
+  (`/Videos/{id}/{source}/Subtitles/{index}/0/Stream.{format}`) is used from the API definition,
+  not from a test.
+- **Free space.** A download fails up front with a message when the volume has less free space
+  than the expected size.
+
+The branch does not pass `swiftformat --lint`; upstream main does. Formatting the port's files
+moves code inside `#if` blocks, so it was left for a machine that can build.
+
+### To check with the screen (in this order)
+
+1. `Tools/macOS/build.sh` builds. If not, the errors are in `build/DerivedData/macos-errors.txt`.
+2. Item page of a movie: Download button, quality menu, progress ring, "Downloaded" state.
+3. Pause, quit, relaunch, resume: the byte count continues.
+4. Season page: "Download" queues every episode; two transfer at a time.
+5. Downloads in the sidebar: grouping, storage used, artwork, delete.
+6. Poster badge on a downloaded item in a library grid.
+7. Turn Wi-Fi off, relaunch: Downloads opens, the item page shows metadata and artwork, playback
+   starts from the local file and resumes at the saved position.
+8. Play a 2 Mbps download (`.ts`) in MPV, seek in it.
+9. Turn Wi-Fi on: the position from step 7 appears on the server (web client resume position).
+10. Release build: no keychain prompt on the second launch.

@@ -427,6 +427,11 @@ final class DownloadManager: ObservableObject {
                 Int64(source.size ?? 0)
             }
 
+            if expected > 0, let available = storage.availableCapacity(), available < expected {
+                let needed = expected.formatted(.byteCount(style: .file))
+                throw ErrorMessage("There is not enough free space for this download (\(needed)).")
+            }
+
             update(itemID) {
                 // Positions recorded meanwhile are newer than the fetched ones
                 if $0.localPlaybackDate != nil {
