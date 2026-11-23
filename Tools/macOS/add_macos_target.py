@@ -161,7 +161,7 @@ def config(i, name, extra):
 \t\t\tbaseConfigurationReferenceAnchor = E150B7D12DFF2E7C00DC7CF4 /* XcodeConfig */;
 \t\t\tbaseConfigurationReferenceRelativePath = Shared.xcconfig;
 \t\t\tbuildSettings = {{
-\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dark-jellyfin";
 \t\t\t\tASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 \t\t\t\tCODE_SIGN_ENTITLEMENTS = "Swiftfin macOS/Resources/Swiftfin.entitlements";
 \t\t\t\tCODE_SIGN_IDENTITY = "-";
